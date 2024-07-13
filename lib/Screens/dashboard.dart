@@ -1,4 +1,3 @@
-import 'package:blog_application/screens/login.dart';
 import 'package:blog_application/components/blogpost.dart';
 import 'package:blog_application/components/searchblogs.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -45,9 +44,11 @@ class _DashboardState extends State<Dashboard> {
             children: [
               searchblogs(searchbar: _searchbar),
               const SizedBox(height: 30),
-              const blogPost(imageUrl: "", title: "Post 1", description: "Blogs"),
+              const blogPost(
+                  imageUrl: "", title: "Post 1", description: "Blogs"),
               const SizedBox(height: 10),
-              const blogPost(imageUrl: "", title: "Post 2", description: "Blogs"),
+              const blogPost(
+                  imageUrl: "", title: "Post 2", description: "Blogs"),
               const Row(children: []),
             ],
           ),
@@ -74,8 +75,9 @@ class _DashboardState extends State<Dashboard> {
               iconSize: 30,
               onPressed: () => Navigator.pushNamed(context, '/publishblog'),
             ),
-            const GButton(
+            GButton(
               icon: LineIcons.user,
+              onPressed: () => Navigator.pushNamed(context, '/profile'),
             ),
           ],
         ),

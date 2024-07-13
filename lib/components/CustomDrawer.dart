@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../Screens/login.dart';
- // Import your LoginScreen here
+// Import your LoginScreen here
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({Key? key}) : super(key: key);
@@ -52,6 +52,7 @@ class CustomDrawer extends StatelessWidget {
             leading: const Icon(Icons.person),
             title: const Text('Profile'),
             onTap: () {
+              Navigator.pushNamed(context, '/profile');
               // Define action for Profile
               // Example: Navigator.pushNamed(context, '/profile');
             },
@@ -64,9 +65,9 @@ class CustomDrawer extends StatelessWidget {
             onTap: () {
               // Define action for Logout
               FirebaseAuth.instance.signOut();
-              Navigator.pushReplacement(
+              Navigator.maybePop(
                 context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
+                '/login',
               );
             },
           ),

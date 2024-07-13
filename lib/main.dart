@@ -1,6 +1,7 @@
+import 'package:blog_application/Screens/Profile.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:blog_application/Screens/Forgetpassword.dart';
+import 'package:blog_application/Screens/ResetPassword.dart';
 import 'package:blog_application/Screens/Signup.dart';
 import 'package:blog_application/Screens/dashboard.dart';
 import 'package:blog_application/Screens/login.dart';
@@ -39,10 +40,11 @@ class _StartUpScreenState extends State<StartUpScreen> {
         '/': (context) => const Splash(),
         '/checkuser': (context) => const AuthPage(),
         '/login': (context) => const LoginScreen(),
-        '/Signup': (context) => const SignupScreen(),
+        '/signup': (context) => const SignupScreen(),
         '/dashboard': (context) => const Dashboard(),
         '/publishblog': (context) => const PublishBlog(),
-        '/Forgetpassword': (context) => const Forgetpassword(),
+        '/profile': (context) => const ProfileScreen(),
+        '/resetpassword': (context) => const Resetpassword(),
       },
     );
   }

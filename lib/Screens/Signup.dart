@@ -14,7 +14,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
-  TextEditingController();
+      TextEditingController();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -34,7 +34,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
     try {
       final UserCredential userCredential =
-      await _auth.createUserWithEmailAndPassword(
+          await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -103,7 +103,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 onPressed: _signUp,
                 child: const Text('Sign Up'),
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white, backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.black,
                 ),
               ),
               const SizedBox(height: 10),
@@ -138,7 +139,10 @@ class _SignupScreenState extends State<SignupScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Blocks(
-                    ontap: () => GoogleAuth().signInWithGoogle(),
+                    ontap: () {
+                      GoogleAuth().signInWithGoogle();
+                      Navigator.pop(context);
+                    },
                     imagepath: 'assets/Google.png',
                   ),
                 ],

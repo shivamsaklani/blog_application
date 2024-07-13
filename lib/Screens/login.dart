@@ -24,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       final UserCredential userCredential =
-      await _auth.signInWithEmailAndPassword(
+          await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -33,6 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (userCredential.user != null) {
         // Example: Navigator.pushNamed(context, '/home');
         print('Login successful for: ${userCredential.user!.email}');
+        Navigator.pushNamed(context, '/Dashboard');
       }
     } on FirebaseAuthException catch (e) {
       setState(() {
@@ -83,12 +84,35 @@ class _LoginScreenState extends State<LoginScreen> {
                 icon: Icons.lock,
                 obscureText: true,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, "/resetpassword");
+                      },
+                      child: const Text(
+                        "Forgot password?",
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 0, 0, 0),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
               ElevatedButton(
                 onPressed: _login,
                 child: const Text('Login'),
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white, backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.black,
                 ),
               ),
               const SizedBox(height: 10),
