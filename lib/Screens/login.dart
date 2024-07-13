@@ -32,8 +32,9 @@ class _LoginScreenState extends State<LoginScreen> {
       // Navigate to another screen or show success message
       if (userCredential.user != null) {
         // Example: Navigator.pushNamed(context, '/home');
+        Navigator.pushNamed(context, '/dashboard');
         print('Login successful for: ${userCredential.user!.email}');
-        Navigator.pushNamed(context, '/Dashboard');
+
       }
     } on FirebaseAuthException catch (e) {
       setState(() {
@@ -159,7 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const Text('New User?'),
                   InkWell(
                     onTap: () {
-                      Navigator.pushNamed(context, '/signup');
+                      Navigator.pushNamed(context, '/Signup');
                     },
                     child: const Text(
                       'Signup',
