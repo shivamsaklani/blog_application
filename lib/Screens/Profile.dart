@@ -401,7 +401,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           );
                         },
                         text: "Log Out",
-                        color: Colors.purple,
+                        color: const Color.fromARGB(188, 12, 188, 156),
                         textColor: Colors.white,
                       ),
                     ],

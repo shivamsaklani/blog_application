@@ -158,7 +158,7 @@ class _ResetpasswordState extends State<Resetpassword> {
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(16, 24, 16, 0),
                     child: Buttons(
-                      color: Colors.black,
+                      color: const Color.fromARGB(188, 12, 188, 156),
                       textColor: Colors.white,
                       onPressed: () async {
                         passwordreset();
