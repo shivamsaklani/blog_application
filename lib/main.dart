@@ -1,4 +1,5 @@
-
+import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:blog_application/Screens/Forgetpassword.dart';
 import 'package:blog_application/Screens/Signup.dart';
 import 'package:blog_application/Screens/dashboard.dart';
@@ -6,8 +7,6 @@ import 'package:blog_application/Screens/login.dart';
 import 'package:blog_application/Screens/publish_Blog.dart';
 import 'package:blog_application/Screens/splash.dart';
 import 'package:blog_application/pages/auth_page.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -15,33 +14,35 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const startupscreen());
+  runApp(const StartUpScreen());
 }
 
-class startupscreen extends StatefulWidget {
-  const startupscreen({super.key});
+class StartUpScreen extends StatefulWidget {
+  const StartUpScreen({super.key});
 
   @override
-  State<startupscreen> createState() => _startupscreenState();
+  State<StartUpScreen> createState() => _StartUpScreenState();
 }
 
-class _startupscreenState extends State<startupscreen> {
+class _StartUpScreenState extends State<StartUpScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          appBarTheme: const AppBarTheme(
-        color: Color.fromARGB(255, 255, 255, 255),
-      )),
+        appBarTheme: const AppBarTheme(
+          color: Color.fromARGB(255, 255, 255, 255),
+        ),
+      ),
+      initialRoute: '/',
       routes: {
-        "/": (context) => const Splash(),
-        "/checkuser": (context) => const AuthPage(),
-        "/login": (context) => const LoginScreen(),
-        "/Signup": (context) => const SignupScreen(),
-        "/dashboard": (context) => const Dashboard(),
-        "/publishblog": (context) => const PublishBlog(),
-        "/Forgetpassword": (context) => const Forgetpassword(),
+        '/': (context) => const Splash(),
+        '/checkuser': (context) => const AuthPage(),
+        '/login': (context) => const LoginScreen(),
+        '/Signup': (context) => const SignupScreen(),
+        '/dashboard': (context) => const Dashboard(),
+        '/publishblog': (context) => const PublishBlog(),
+        '/Forgetpassword': (context) => const Forgetpassword(),
       },
     );
   }
