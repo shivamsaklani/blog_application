@@ -32,7 +32,9 @@ class _LoginScreenState extends State<LoginScreen> {
       // Navigate to another screen or show success message
       if (userCredential.user != null) {
         // Example: Navigator.pushNamed(context, '/home');
+        Navigator.pushNamed(context, '/dashboard');
         print('Login successful for: ${userCredential.user!.email}');
+
       }
     } on FirebaseAuthException catch (e) {
       setState(() {

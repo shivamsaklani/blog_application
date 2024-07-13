@@ -41,7 +41,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
       // Navigate to another screen or show success message
       if (userCredential.user != null) {
-        // Example: Navigator.pushNamed(context, '/home');
+        Example: Navigator.pushNamed(context, '/dashboard');
       }
     } on FirebaseAuthException catch (e) {
       setState(() {
