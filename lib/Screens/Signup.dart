@@ -1,22 +1,70 @@
-import 'package:blog_application/components/blocks.dart';
-import 'package:blog_application/components/buttons.dart';
-import 'package:blog_application/components/custom_textfields.dart';
-import 'package:blog_application/services/google_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:blog_application/services/google_auth.dart';
+import 'package:blog_application/components/blocks.dart';
 
 class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+  const SignupScreen({Key? key}) : super(key: key);
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  final _confirmpassword = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _auth = FirebaseAuth.instance; // Initialize Firebase Auth
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+  TextEditingController();
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  String _errorMessage = '';
+
+  void _signUp() async {
+    final String email = _emailController.text.trim();
+    final String password = _passwordController.text.trim();
+    final String confirmPassword = _confirmPasswordController.text.trim();
+
+    if (password != confirmPassword) {
+      setState(() {
+        _errorMessage = 'Passwords do not match.';
+      });
+      return;
+    }
+
+    try {
+      final UserCredential userCredential =
+      await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // Navigate to another screen or show success message
+      if (userCredential.user != null) {
+        // Example: Navigator.pushNamed(context, '/home');
+      }
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        switch (e.code) {
+          case 'weak-password':
+            _errorMessage = 'The password provided is too weak.';
+            break;
+          case 'email-already-in-use':
+            _errorMessage = 'The account already exists for that email.';
+            break;
+          case 'invalid-email':
+            _errorMessage = 'The email address is not valid.';
+            break;
+          default:
+            _errorMessage = 'An error occurred. Please try again later.';
+        }
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'An unexpected error occurred. Please try again later.';
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,76 +73,54 @@ class _SignupScreenState extends State<SignupScreen> {
       body: SingleChildScrollView(
         child: Center(
           child: Column(
-            children: [
+            children: <Widget>[
+              const SizedBox(height: 20),
               const Image(
                 image: AssetImage('assets/Login.jpg'),
                 fit: BoxFit.fill,
               ),
-              const SizedBox(height: 10),
-              CustomTextfields(
+              const SizedBox(height: 20),
+              _buildErrorMessage(),
+              _buildTextField(
                 controller: _emailController,
-                hintText: "UserMail",
-                obscureText: false,
-                Icons: Icons.mail,
+                hintText: 'Email',
+                icon: Icons.mail,
               ),
-              const SizedBox(height: 10),
-              CustomTextfields(
+              _buildTextField(
                 controller: _passwordController,
-                hintText: "Password",
+                hintText: 'Password',
+                icon: Icons.lock,
                 obscureText: true,
-                Icons: Icons.lock,
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              CustomTextfields(
-                controller: _confirmpassword,
-                hintText: "Confirm Password",
+              _buildTextField(
+                controller: _confirmPasswordController,
+                hintText: 'Confirm Password',
+                icon: Icons.lock,
                 obscureText: true,
-                Icons: Icons.lock,
               ),
               const SizedBox(height: 20),
-              Buttons(
-                text: 'Sign Up',
-                color: Colors.black,
-                textColor: Colors.white,
-                onPressed: () async {
-                  // Handle user registration with Firebase Auth
-                  try {
-                    if (_confirmpassword.text == _passwordController.text) {
-                      final credential =
-                          await _auth.createUserWithEmailAndPassword(
-                        email: _emailController.text,
-                        password: _passwordController.text,
-                      );
-                      if (credential.user != null) {}
-                    }
-                  } on FirebaseAuthException catch (e) {
-                    if (e.code == 'weak-password') {
-                      // Show appropriate error message to user
-                    } else if (e.code == 'email-already-in-use') {
-                      // Show appropriate error message to user
-                    }
-                  } catch (e) {
-                    // Handle other exceptions
-                  }
-                },
+              ElevatedButton(
+                onPressed: _signUp,
+                child: const Text('Sign Up'),
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white, backgroundColor: Colors.black,
+                ),
               ),
               const SizedBox(height: 10),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 52),
                 child: Row(
-                  children: [
+                  children: <Widget>[
                     Expanded(
                       child: Divider(
                         thickness: 0.5,
                         color: Colors.white,
                       ),
                     ),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
-                        "Or",
+                        'Or',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -110,35 +136,65 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                children: <Widget>[
                   Blocks(
-                      ontap: () => GoogleAuth().signInWithGoogle(),
-                      imagepath: "assets/Google.png"),
+                    ontap: () => GoogleAuth().signInWithGoogle(),
+                    imagepath: 'assets/Google.png',
+                  ),
                 ],
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Already have account ?"),
+                children: <Widget>[
+                  const Text('Already have an account?'),
                   InkWell(
-                    onTap: () => {
-                      Navigator.pop(context),
-                    },
+                    onTap: () => Navigator.pop(context),
                     child: const Text(
-                      "Login",
+                      'Login',
                       style: TextStyle(
                         color: Color.fromARGB(255, 6, 88, 32),
                       ),
                     ),
-                  )
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String hintText,
+    required IconData icon,
+    bool obscureText = false,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: TextField(
+        controller: controller,
+        obscureText: obscureText,
+        decoration: InputDecoration(
+          hintText: hintText,
+          prefixIcon: Icon(icon),
+          border: OutlineInputBorder(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildErrorMessage() {
+    if (_errorMessage.isEmpty) {
+      return Container();
+    }
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+        _errorMessage,
+        style: TextStyle(color: Colors.red),
       ),
     );
   }

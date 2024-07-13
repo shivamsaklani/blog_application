@@ -41,47 +41,49 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBpUNDebJy5kyFKqAUQMSav64OU46L48tQ',
-    appId: '1:258006376799:web:4947f7db3700d8290416ea',
-    messagingSenderId: '258006376799',
-    projectId: 'blogapplication-80ede',
-    authDomain: 'blogapplication-80ede.firebaseapp.com',
-    storageBucket: 'blogapplication-80ede.appspot.com',
+    apiKey: 'AIzaSyABFMApbRXyw4jBQzP1JDvL4Q0i7cXLBy4',
+    appId: '1:403105079272:web:996858ec6170db7552ce5d',
+    messagingSenderId: '403105079272',
+    projectId: 'blog-application-f9e6a',
+    authDomain: 'blog-application-f9e6a.firebaseapp.com',
+    storageBucket: 'blog-application-f9e6a.appspot.com',
+    measurementId: 'G-81CK9CMEKP',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDMOyV75HlYMHyBOaWqy1v12RafreATHSs',
-    appId: '1:258006376799:android:97f8f7c02dc026e90416ea',
-    messagingSenderId: '258006376799',
-    projectId: 'blogapplication-80ede',
-    storageBucket: 'blogapplication-80ede.appspot.com',
+    apiKey: 'AIzaSyDcHMxgNj-obDjVyWYJVjbX3c5VWJp1Fzo',
+    appId: '1:403105079272:android:7017dae4771280d452ce5d',
+    messagingSenderId: '403105079272',
+    projectId: 'blog-application-f9e6a',
+    storageBucket: 'blog-application-f9e6a.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBVGUmJg6t4h3ZkDNmM_Px8USuPUzgDTns',
-    appId: '1:258006376799:ios:4532f661e494ffc80416ea',
-    messagingSenderId: '258006376799',
-    projectId: 'blogapplication-80ede',
-    storageBucket: 'blogapplication-80ede.appspot.com',
-    iosBundleId: 'com.example.blogApp',
+    apiKey: 'AIzaSyA-XYOTVCOgdSpW0auL80SDkixOJypKXXA',
+    appId: '1:403105079272:ios:096d0e79d438e93152ce5d',
+    messagingSenderId: '403105079272',
+    projectId: 'blog-application-f9e6a',
+    storageBucket: 'blog-application-f9e6a.appspot.com',
+    iosBundleId: 'com.example.blogApplication',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBVGUmJg6t4h3ZkDNmM_Px8USuPUzgDTns',
-    appId: '1:258006376799:ios:4532f661e494ffc80416ea',
-    messagingSenderId: '258006376799',
-    projectId: 'blogapplication-80ede',
-    storageBucket: 'blogapplication-80ede.appspot.com',
-    iosBundleId: 'com.example.blogApp',
+    apiKey: 'AIzaSyA-XYOTVCOgdSpW0auL80SDkixOJypKXXA',
+    appId: '1:403105079272:ios:096d0e79d438e93152ce5d',
+    messagingSenderId: '403105079272',
+    projectId: 'blog-application-f9e6a',
+    storageBucket: 'blog-application-f9e6a.appspot.com',
+    iosBundleId: 'com.example.blogApplication',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyBpUNDebJy5kyFKqAUQMSav64OU46L48tQ',
-    appId: '1:258006376799:web:097c52ce2ceed1500416ea',
-    messagingSenderId: '258006376799',
-    projectId: 'blogapplication-80ede',
-    authDomain: 'blogapplication-80ede.firebaseapp.com',
-    storageBucket: 'blogapplication-80ede.appspot.com',
+    apiKey: 'AIzaSyABFMApbRXyw4jBQzP1JDvL4Q0i7cXLBy4',
+    appId: '1:403105079272:web:402c8fa1b585d80252ce5d',
+    messagingSenderId: '403105079272',
+    projectId: 'blog-application-f9e6a',
+    authDomain: 'blog-application-f9e6a.firebaseapp.com',
+    storageBucket: 'blog-application-f9e6a.appspot.com',
+    measurementId: 'G-GMHEZ5LNFF',
   );
 
 }
