@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:blog_application/components/blocks.dart';
@@ -15,6 +16,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   String _errorMessage = '';
 
@@ -31,6 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // Navigate to another screen or show success message
       if (userCredential.user != null) {
+        await _storeUserEmail(userCredential.user!.email!);
         // Example: Navigator.pushNamed(context, '/home');
         Navigator.pushNamed(context, '/dashboard');
         print('Login successful for: ${userCredential.user!.email}');
@@ -58,6 +61,21 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     }
   }
+
+  Future<void> _storeUserEmail(String userEmail) async {
+    try {
+
+      await _firestore.collection('users').doc(_auth.currentUser!.uid).set({
+        'email': userEmail,
+
+      });
+      print('User email stored in Firestore: $userEmail');
+    } catch (e) {
+      print('Error storing user email: $e');
+      // Handle Firestore errors
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const Text('New User?'),
                   InkWell(
                     onTap: () {
-                      Navigator.pushNamed(context, '/Signup');
+                      Navigator.pushNamed(context, '/signup');
                     },
                     child: const Text(
                       'Signup',

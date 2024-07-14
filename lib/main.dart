@@ -1,3 +1,4 @@
+import 'package:blog_application/Screens/EditProfileScreen.dart';
 import 'package:blog_application/Screens/Profile.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -44,6 +45,7 @@ class _StartUpScreenState extends State<StartUpScreen> {
         '/dashboard': (context) => const Dashboard(),
         '/publishblog': (context) => const PublishBlog(),
         '/profile': (context) => const ProfileScreen(),
+        '/editprofile':(context)=> const EditProfileScreen(),
         '/resetpassword': (context) => const Resetpassword(),
       },
     );

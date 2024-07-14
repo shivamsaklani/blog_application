@@ -1,7 +1,7 @@
 import 'package:blog_application/Screens/login.dart';
 import 'package:blog_application/components/buttons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -14,6 +14,44 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  String? userName;
+  String? userEmail;
+  String? userProfilePicUrl;
+  int? userAge;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserProfile();
+  }
+  Future<void> _loadUserProfile() async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      try {
+        DocumentSnapshot userData =
+        await _firestore.collection('users').doc(user.uid).get();
+        if (userData.exists) {
+          setState(() {
+            userName = userData.get('name');
+            userAge = userData.get('age'); // Ensure 'age' field exists and is properly stored
+            userProfilePicUrl = userData.get('photoUrl');
+            userEmail = userData.get('email');
+          });
+          print("User Profile Loaded: Name - $userName, Age - $userAge, Photo URL - $userProfilePicUrl");
+        } else {
+          print("User data does not exist for user ID: ${user.uid}");
+        }
+      } catch (e) {
+        print("Error fetching user data: $e");
+      }
+    } else {
+      print("Current user is null");
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +71,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           'Profile',
           style: GoogleFonts.lato(),
         ),
-        actions: [],
         centerTitle: false,
         elevation: 0,
       ),
@@ -53,10 +90,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       BoxShadow(
                         blurRadius: 1,
                         color: Color(0xFFF1F4F8),
-                        offset: Offset(
-                          0.0,
-                          0,
-                        ),
+                        offset: Offset(0, 0),
                       )
                     ],
                   ),
@@ -76,11 +110,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             padding: EdgeInsets.all(2),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
-                              child: Image.network(
-                                'https://images.unsplash.com/photo-1592520113018-180c8bc831c9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTI3fHxwcm9maWxlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60',
+                              child: userProfilePicUrl != null && userProfilePicUrl!.isNotEmpty
+                                  ? Image.network(
+                                userProfilePicUrl!,
                                 width: 100,
                                 height: 100,
                                 fit: BoxFit.cover,
+                              )
+                                  : Icon(
+                                Icons.person,
+                                size: 50,
+                                color: Colors.grey,
                               ),
                             ),
                           ),
@@ -92,13 +132,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Elaine Edwards',
+                                userName ?? 'Loading...',
+                                style: GoogleFonts.lato(fontSize: 18),
                               ),
                               Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                                 child: Text(
-                                  'elaine.edwards@google.com',
+                                  userEmail ?? 'Loading...',
+                                  style: GoogleFonts.lato(fontSize: 16, color: Colors.grey),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                child: Text(
+                                  'Age: ${userAge ?? 'Loading...'}', // Display userAge here
+                                  style: GoogleFonts.lato(fontSize: 16, color: Colors.grey),
                                 ),
                               ),
                             ],
@@ -128,8 +176,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           color: Colors.white,
                         ),
                         child: Padding(
-                          padding:
-                              EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
+                          padding: EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -150,8 +197,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     Align(
                                       alignment: AlignmentDirectional(0.95, 0),
                                       child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0, 0, 8, 0),
+                                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 8, 0),
                                         child: Icon(
                                           Icons.nights_stay,
                                           color: Color(0xFF57636C),
@@ -170,14 +216,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             BoxShadow(
                                               blurRadius: 4,
                                               color: Color(0x430B0D0F),
-                                              offset: Offset(
-                                                0.0,
-                                                2,
-                                              ),
+                                              offset: Offset(0, 2),
                                             )
                                           ],
-                                          borderRadius:
-                                              BorderRadius.circular(30),
+                                          borderRadius: BorderRadius.circular(30),
                                           shape: BoxShape.rectangle,
                                         ),
                                       ),
@@ -203,8 +245,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           color: Colors.white,
                         ),
                         child: Padding(
-                          padding:
-                              EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
+                          padding: EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -225,8 +266,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     Align(
                                       alignment: AlignmentDirectional(-0.9, 0),
                                       child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            8, 2, 0, 0),
+                                        padding: EdgeInsetsDirectional.fromSTEB(8, 2, 0, 0),
                                         child: Icon(
                                           Icons.wb_sunny_rounded,
                                           color: Color(0xFF57636C),
@@ -245,14 +285,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             BoxShadow(
                                               blurRadius: 4,
                                               color: Color(0x430B0D0F),
-                                              offset: Offset(
-                                                0.0,
-                                                2,
-                                              ),
+                                              offset: Offset(0, 2),
                                             )
                                           ],
-                                          borderRadius:
-                                              BorderRadius.circular(30),
+                                          borderRadius: BorderRadius.circular(30),
                                           shape: BoxShape.rectangle,
                                         ),
                                       ),
@@ -298,10 +334,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         BoxShadow(
                           blurRadius: 5,
                           color: Color(0x3416202A),
-                          offset: Offset(
-                            0.0,
-                            2,
-                          ),
+                          offset: Offset(0, 2),
                         )
                       ],
                       borderRadius: BorderRadius.circular(12),
@@ -317,8 +350,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Navigator.pushNamed(context, "/resetpassword");
                             },
                             child: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                              padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
                               child: Text(
                                 'Change Password',
                               ),
@@ -350,10 +382,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         BoxShadow(
                           blurRadius: 5,
                           color: Color(0x3416202A),
-                          offset: Offset(
-                            0.0,
-                            2,
-                          ),
+                          offset: Offset(0, 2),
                         )
                       ],
                       borderRadius: BorderRadius.circular(12),
@@ -364,11 +393,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                            child: Text(
-                              'Edit Profile',
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, "/editprofile");
+                            },
+                            child: Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                              child: Text(
+                                'Edit Profile',
+                              ),
                             ),
                           ),
                           Expanded(
