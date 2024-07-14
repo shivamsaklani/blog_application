@@ -37,7 +37,6 @@ class _LoginScreenState extends State<LoginScreen> {
         // Example: Navigator.pushNamed(context, '/home');
         Navigator.pushNamed(context, '/dashboard');
         print('Login successful for: ${userCredential.user!.email}');
-
       }
     } on FirebaseAuthException catch (e) {
       setState(() {

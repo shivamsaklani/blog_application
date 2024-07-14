@@ -43,13 +43,37 @@ class _DashboardState extends State<Dashboard> {
           child: Column(
             children: [
               searchblogs(searchbar: _searchbar),
-              const SizedBox(height: 30),
-              const blogPost(
-                  imageUrl: "", title: "Post 1", description: "Blogs"),
-              const SizedBox(height: 10),
-              const blogPost(
-                  imageUrl: "", title: "Post 2", description: "Blogs"),
-              const Row(children: []),
+              // Generated code for this Column Widget...
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 52),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Generated code for this Text Widget...
+                    Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(16, 16, 0, 0),
+                      child: Text(
+                        'Blogs',
+                        style: GoogleFonts.plusJakartaSans(
+                          color: Color(0xFF57636C),
+                          fontSize: 16,
+                          letterSpacing: 0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+
+                    blogPost(
+                        imageUrl: "", title: "post1", description: "Post1"),
+                    blogPost(
+                        imageUrl: '', title: "post2", description: "Post2"),
+                  ],
+                ),
+              )
             ],
           ),
         ),
