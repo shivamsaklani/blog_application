@@ -46,11 +46,37 @@ class CustomDrawer extends StatelessWidget {
                   return CircularProgressIndicator();
                 }
 
-                if (!snapshot.hasData || snapshot.data == null) {
-                  return Text('User data not available.');
+                if (!snapshot.hasData || snapshot.data == null || !snapshot.data!.exists) {
+                  // Handle scenario where document is empty or doesn't exist
+                  return Column(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Colors.grey,
+                        child: Icon(
+                          Icons.person,
+                          color: Colors.white,
+                          size: 36,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        user.displayName ?? 'User Name',
+                        style: GoogleFonts.robotoMono(),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        user.email ?? 'email@example.com',
+                        style: GoogleFonts.robotoMono(),
+                      ),
+                    ],
+                  );
                 }
 
                 var userData = snapshot.data!;
+
+                // Handle null or missing fields gracefully
+                String? photoUrl = userData.get('photoUrl') as String?;
+                String? displayName = userData.get('name') as String?;
 
                 return Row(
                   children: [
@@ -69,14 +95,28 @@ class CustomDrawer extends StatelessWidget {
                         padding: const EdgeInsets.all(2),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
-                          child: user.photoURL != null || userData['photoUrl'] != null
+                          child: photoUrl != null
                               ? Image.network(
-                            userData['photoUrl'] ?? user.photoURL!,
+                            photoUrl,
                             width: 36,
                             height: 36,
                             fit: BoxFit.cover,
                           )
-                              : Icon(Icons.person, size: 36),
+                              : user.photoURL != null
+                              ? Image.network(
+                            user.photoURL!,
+                            width: 36,
+                            height: 36,
+                            fit: BoxFit.cover,
+                          )
+                              : CircleAvatar(
+                            backgroundColor: Colors.grey,
+                            child: Icon(
+                              Icons.person,
+                              color: Colors.white,
+                              size: 36,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -85,7 +125,7 @@ class CustomDrawer extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          userData['name'] ?? user.displayName ?? 'User Name',
+                          displayName ?? user.displayName ?? 'User Name',
                           style: GoogleFonts.robotoMono(),
                         ),
                         Text(
