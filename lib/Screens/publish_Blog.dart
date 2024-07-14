@@ -30,7 +30,9 @@ class _PublishBlogState extends State<PublishBlog> {
   }
 
   Future<void> submitBlogPost() async {
-    if (titleController.text.isEmpty || contentController.text.isEmpty || pickedImage == null) {
+    if (titleController.text.isEmpty ||
+        contentController.text.isEmpty ||
+        pickedImage == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please fill in all fields and select an image.'),
@@ -45,7 +47,8 @@ class _PublishBlogState extends State<PublishBlog> {
 
     try {
       final String imageUrl = await uploadImage(File(pickedImage!.path));
-      await saveBlogPost(titleController.text, contentController.text, imageUrl);
+      await saveBlogPost(
+          titleController.text, contentController.text, imageUrl);
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -73,17 +76,22 @@ class _PublishBlogState extends State<PublishBlog> {
 
   Future<String> uploadImage(File imageFile) async {
     final String fileId = const Uuid().v4();
-    final Reference storageReference = FirebaseStorage.instance.ref().child('blog_images/$fileId');
+    final Reference storageReference =
+        FirebaseStorage.instance.ref().child('blog_images/$fileId');
     final UploadTask uploadTask = storageReference.putFile(imageFile);
     final TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
     return await taskSnapshot.ref.getDownloadURL();
   }
 
-  Future<void> saveBlogPost(String title, String content, String imageUrl) async {
-    final CollectionReference blogPosts = FirebaseFirestore.instance.collection('blog_posts');
-    await blogPosts.add({
+  Future<void> saveBlogPost(
+      String title, String content, String imageUrl) async {
+    String postId =
+        FirebaseFirestore.instance.collection('blog_posts').doc().id;
+
+    await FirebaseFirestore.instance.collection('blog_posts').doc(postId).set({
       'title': title,
-      'content': content,
+      'content': content.trim(),
+      'postId': postId,
       'imageUrl': imageUrl,
       'timestamp': FieldValue.serverTimestamp(),
     });
@@ -104,20 +112,20 @@ class _PublishBlogState extends State<PublishBlog> {
             children: [
               pickedImage != null
                   ? Image.file(
-                  File(pickedImage!.path)) // Display selected image
+                      File(pickedImage!.path)) // Display selected image
                   : InkWell(
-                onTap: pickImage,
-                child: Container(
-                  height: 150,
-                  width: double.infinity,
-                  color: Colors.grey[200],
-                  child: Icon(
-                    Icons.add_a_photo,
-                    size: 50,
-                    color: Colors.grey[400],
-                  ),
-                ),
-              ),
+                      onTap: pickImage,
+                      child: Container(
+                        height: 150,
+                        width: double.infinity,
+                        color: Colors.grey[200],
+                        child: Icon(
+                          Icons.add_a_photo,
+                          size: 50,
+                          color: Colors.grey[400],
+                        ),
+                      ),
+                    ),
               const SizedBox(height: 10),
               TextField(
                 controller: titleController,
@@ -141,11 +149,11 @@ class _PublishBlogState extends State<PublishBlog> {
               isLoading
                   ? const CircularProgressIndicator()
                   : Buttons(
-                text: "Publish",
-                color: const Color.fromARGB(188, 12, 188, 156),
-                textColor: Colors.white,
-                onPressed: submitBlogPost,
-              ),
+                      text: "Publish",
+                      color: const Color.fromARGB(188, 12, 188, 156),
+                      textColor: Colors.white,
+                      onPressed: submitBlogPost,
+                    ),
             ],
           ),
         ),

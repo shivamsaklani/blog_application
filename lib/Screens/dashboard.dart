@@ -1,5 +1,3 @@
-import 'package:blog_application/components/blogpost.dart';
-import 'package:blog_application/components/searchblogs.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -19,13 +17,8 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   final auth = FirebaseAuth.instance;
-  final SearchController _searchbar = SearchController();
-
-  Future<List<Map<String, dynamic>>> fetchBlogPosts() async {
-    QuerySnapshot querySnapshot =
-    await FirebaseFirestore.instance.collection('blog_posts').get();
-    return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
-  }
+  final TextEditingController _searchController = TextEditingController();
+  String searchQuery = "";
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +43,31 @@ class _DashboardState extends State<Dashboard> {
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
           child: Column(
             children: [
-              searchblogs(searchbar: _searchbar),
-              // Fetch and display blog posts
+              PreferredSize(
+                preferredSize: Size.fromHeight(48.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      hintText: 'Search posts...',
+                      border: OutlineInputBorder(),
+                      filled: true,
+                      fillColor: Colors.white,
+                      prefixIcon: Icon(Icons.search),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        searchQuery = value.trim().toLowerCase();
+                      });
+                    },
+                  ),
+                ),
+              ),
               FutureBuilder<List<Map<String, dynamic>>>(
-                future: fetchBlogPosts(),
+                future: searchQuery.isEmpty
+                    ? fetchBlogPosts()
+                    : searchBlogPosts(searchQuery),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -70,7 +84,8 @@ class _DashboardState extends State<Dashboard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(16, 16, 0, 0),
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(16, 16, 0, 0),
                             child: Text(
                               'Blogs',
                               style: GoogleFonts.plusJakartaSans(
@@ -87,6 +102,7 @@ class _DashboardState extends State<Dashboard> {
                               imageUrl: post['imageUrl'] ?? '',
                               title: post['title'] ?? '',
                               description: post['content'] ?? '',
+                              postId: post['postId'] ?? '',
                             );
                           }).toList(),
                         ],
@@ -128,5 +144,24 @@ class _DashboardState extends State<Dashboard> {
         ),
       ),
     );
+  }
+
+  Future<List<Map<String, dynamic>>> fetchBlogPosts() async {
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection('blog_posts').get();
+    return querySnapshot.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
+  }
+
+  Future<List<Map<String, dynamic>>> searchBlogPosts(String query) async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('blog_posts')
+        .where('title', isGreaterThanOrEqualTo: query)
+        .where('title', isLessThanOrEqualTo: query + '\uf8ff')
+        .get();
+    return querySnapshot.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
   }
 }

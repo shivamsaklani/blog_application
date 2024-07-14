@@ -1,4 +1,3 @@
-import 'package:blog_application/Screens/login.dart';
 import 'package:blog_application/components/buttons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -27,20 +26,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
     _loadUserProfile();
   }
+
   Future<void> _loadUserProfile() async {
     User? user = _auth.currentUser;
     if (user != null) {
       try {
         DocumentSnapshot userData =
-        await _firestore.collection('users').doc(user.uid).get();
+            await _firestore.collection('users').doc(user.uid).get();
         if (userData.exists) {
           setState(() {
             userName = userData.get('name');
-            userAge = userData.get('age'); // Ensure 'age' field exists and is properly stored
+            userAge = userData
+                .get('age'); // Ensure 'age' field exists and is properly stored
             userProfilePicUrl = userData.get('photoUrl');
             userEmail = userData.get('email');
           });
-          print("User Profile Loaded: Name - $userName, Age - $userAge, Photo URL - $userProfilePicUrl");
+          print(
+              "User Profile Loaded: Name - $userName, Age - $userAge, Photo URL - $userProfilePicUrl");
         } else {
           print("User data does not exist for user ID: ${user.uid}");
         }
@@ -51,7 +53,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       print("Current user is null");
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -110,18 +111,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             padding: EdgeInsets.all(2),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
-                              child: userProfilePicUrl != null && userProfilePicUrl!.isNotEmpty
+                              child: userProfilePicUrl != null &&
+                                      userProfilePicUrl!.isNotEmpty
                                   ? Image.network(
-                                userProfilePicUrl!,
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
-                              )
+                                      userProfilePicUrl!,
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.cover,
+                                    )
                                   : Icon(
-                                Icons.person,
-                                size: 50,
-                                color: Colors.grey,
-                              ),
+                                      Icons.person,
+                                      size: 50,
+                                      color: Colors.grey,
+                                    ),
                             ),
                           ),
                         ),
@@ -136,17 +138,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 style: GoogleFonts.lato(fontSize: 18),
                               ),
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                                 child: Text(
                                   userEmail ?? 'Loading...',
-                                  style: GoogleFonts.lato(fontSize: 16, color: Colors.grey),
+                                  style: GoogleFonts.lato(
+                                      fontSize: 16, color: Colors.grey),
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                                 child: Text(
                                   'Age: ${userAge ?? 'Loading...'}', // Display userAge here
-                                  style: GoogleFonts.lato(fontSize: 16, color: Colors.grey),
+                                  style: GoogleFonts.lato(
+                                      fontSize: 16, color: Colors.grey),
                                 ),
                               ),
                             ],
@@ -157,152 +163,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
               ],
-            ),
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0, 1, 0, 0),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  if (Theme.of(context).brightness == Brightness.light)
-                    InkWell(
-                      splashColor: Colors.transparent,
-                      focusColor: Colors.transparent,
-                      hoverColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      onTap: () async {},
-                      child: Container(
-                        width: MediaQuery.sizeOf(context).width,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                        ),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Switch to Dark Mode',
-                              ),
-                              Container(
-                                width: 80,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFF1F4F8),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Stack(
-                                  alignment: AlignmentDirectional(0, 0),
-                                  children: [
-                                    Align(
-                                      alignment: AlignmentDirectional(0.95, 0),
-                                      child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 8, 0),
-                                        child: Icon(
-                                          Icons.nights_stay,
-                                          color: Color(0xFF57636C),
-                                          size: 20,
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: AlignmentDirectional(-0.85, 0),
-                                      child: Container(
-                                        width: 36,
-                                        height: 36,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              blurRadius: 4,
-                                              color: Color(0x430B0D0F),
-                                              offset: Offset(0, 2),
-                                            )
-                                          ],
-                                          borderRadius: BorderRadius.circular(30),
-                                          shape: BoxShape.rectangle,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  if (Theme.of(context).brightness == Brightness.dark)
-                    InkWell(
-                      splashColor: Colors.transparent,
-                      focusColor: Colors.transparent,
-                      hoverColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      onTap: () async {},
-                      child: Container(
-                        width: MediaQuery.sizeOf(context).width,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                        ),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Switch to Light Mode',
-                              ),
-                              Container(
-                                width: 80,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFF1F4F8),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Stack(
-                                  alignment: AlignmentDirectional(0, 0),
-                                  children: [
-                                    Align(
-                                      alignment: AlignmentDirectional(-0.9, 0),
-                                      child: Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(8, 2, 0, 0),
-                                        child: Icon(
-                                          Icons.wb_sunny_rounded,
-                                          color: Color(0xFF57636C),
-                                          size: 24,
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: AlignmentDirectional(0.9, 0),
-                                      child: Container(
-                                        width: 36,
-                                        height: 36,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              blurRadius: 4,
-                                              color: Color(0x430B0D0F),
-                                              offset: Offset(0, 2),
-                                            )
-                                          ],
-                                          borderRadius: BorderRadius.circular(30),
-                                          shape: BoxShape.rectangle,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
             ),
             Column(
               mainAxisSize: MainAxisSize.max,
@@ -350,7 +210,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Navigator.pushNamed(context, "/resetpassword");
                             },
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
                               child: Text(
                                 'Change Password',
                               ),
@@ -398,7 +259,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Navigator.pushNamed(context, "/editprofile");
                             },
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
                               child: Text(
                                 'Edit Profile',
                               ),
