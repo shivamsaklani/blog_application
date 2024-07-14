@@ -1,5 +1,6 @@
 import 'package:blog_application/components/blogpost.dart';
 import 'package:blog_application/components/searchblogs.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,6 +8,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 
 import '../components/CustomDrawer.dart';
+import 'BlogPost.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -18,6 +20,12 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   final auth = FirebaseAuth.instance;
   final SearchController _searchbar = SearchController();
+
+  Future<List<Map<String, dynamic>>> fetchBlogPosts() async {
+    QuerySnapshot querySnapshot =
+    await FirebaseFirestore.instance.collection('blog_posts').get();
+    return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,37 +51,50 @@ class _DashboardState extends State<Dashboard> {
           child: Column(
             children: [
               searchblogs(searchbar: _searchbar),
-              // Generated code for this Column Widget...
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 52),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Generated code for this Text Widget...
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(16, 16, 0, 0),
-                      child: Text(
-                        'Blogs',
-                        style: GoogleFonts.plusJakartaSans(
-                          color: Color(0xFF57636C),
-                          fontSize: 16,
-                          letterSpacing: 0,
-                          fontWeight: FontWeight.w500,
-                        ),
+              // Fetch and display blog posts
+              FutureBuilder<List<Map<String, dynamic>>>(
+                future: fetchBlogPosts(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return const Center(child: Text('Error fetching posts.'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(child: Text('No posts found.'));
+                  } else {
+                    List<Map<String, dynamic>> blogPosts = snapshot.data!;
+                    return Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 52),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(16, 16, 0, 0),
+                            child: Text(
+                              'Blogs',
+                              style: GoogleFonts.plusJakartaSans(
+                                color: Color(0xFF57636C),
+                                fontSize: 16,
+                                letterSpacing: 0,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          ...blogPosts.map((post) {
+                            return BlogPost(
+                              imageUrl: post['imageUrl'] ?? '',
+                              title: post['title'] ?? '',
+                              description: post['content'] ?? '',
+                            );
+                          }).toList(),
+                        ],
                       ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-
-                    blogPost(
-                        imageUrl: "", title: "post1", description: "Post1"),
-                    blogPost(
-                        imageUrl: '', title: "post2", description: "Post2"),
-                  ],
-                ),
-              )
+                    );
+                  }
+                },
+              ),
             ],
           ),
         ),
