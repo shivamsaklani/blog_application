@@ -43,8 +43,10 @@ dependencies:
   google_sign_in: ^6.2.1
   flutter_lints: ^4.0.0
   uuid: ^3.0.4
-  provider: ^6.0.0
   intl: ^0.17.0
+  flutter_quill: ^7.1.1 
+  flutter_hooks: ^0.18.1
+  provider: ^6.0.4
   
 
 

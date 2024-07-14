@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CustomDrawer extends StatelessWidget {
-  const CustomDrawer({Key? key}) : super(key: key);
+  const CustomDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class CustomDrawer extends StatelessWidget {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onPressed: () => Navigator.pop(context),
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.close_rounded,
                     color: Color(0xFF57636C),
                     size: 32,
@@ -38,19 +38,19 @@ class CustomDrawer extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             StreamBuilder<DocumentSnapshot>(
               stream: FirebaseFirestore.instance.collection('users').doc(user!.uid).snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 }
 
                 if (!snapshot.hasData || snapshot.data == null || !snapshot.data!.exists) {
                   // Handle scenario where document is empty or doesn't exist
                   return Column(
                     children: [
-                      CircleAvatar(
+                      const CircleAvatar(
                         backgroundColor: Colors.grey,
                         child: Icon(
                           Icons.person,
@@ -58,12 +58,12 @@ class CustomDrawer extends StatelessWidget {
                           size: 36,
                         ),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Text(
                         user.displayName ?? 'User Name',
                         style: GoogleFonts.robotoMono(),
                       ),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(
                         user.email ?? 'email@example.com',
                         style: GoogleFonts.robotoMono(),
@@ -84,10 +84,10 @@ class CustomDrawer extends StatelessWidget {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: Color(0x4C4B39EF),
+                        color: const Color(0x4C4B39EF),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: Color(0xFF4B39EF),
+                          color: const Color(0xFF4B39EF),
                           width: 2,
                         ),
                       ),
@@ -109,7 +109,7 @@ class CustomDrawer extends StatelessWidget {
                             height: 36,
                             fit: BoxFit.cover,
                           )
-                              : CircleAvatar(
+                              : const CircleAvatar(
                             backgroundColor: Colors.grey,
                             child: Icon(
                               Icons.person,
@@ -120,7 +120,7 @@ class CustomDrawer extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(width: 12),
+                    const SizedBox(width: 12),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -138,8 +138,8 @@ class CustomDrawer extends StatelessWidget {
                 );
               },
             ),
-            SizedBox(height: 16),
-            Divider(
+            const SizedBox(height: 16),
+            const Divider(
               thickness: 1,
               color: Color(0xFFE0E3E7),
             ),
@@ -151,12 +151,12 @@ class CustomDrawer extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.account_circle_outlined,
                       color: Color(0xFF14181B),
                       size: 20,
                     ),
-                    SizedBox(width: 12),
+                    const SizedBox(width: 12),
                     Text(
                       'My Profile',
                       style: GoogleFonts.robotoMono(),
@@ -171,12 +171,12 @@ class CustomDrawer extends StatelessWidget {
                 onTap: () {},
                 child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.settings_outlined,
                       color: Color(0xFF14181B),
                       size: 20,
                     ),
-                    SizedBox(width: 12),
+                    const SizedBox(width: 12),
                     Text(
                       'Settings',
                       style: GoogleFonts.robotoMono(),
@@ -185,7 +185,7 @@ class CustomDrawer extends StatelessWidget {
                 ),
               ),
             ),
-            Divider(
+            const Divider(
               thickness: 1,
               color: Color(0xFFE0E3E7),
             ),
@@ -202,12 +202,12 @@ class CustomDrawer extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.login_rounded,
                       color: Color(0xFF14181B),
                       size: 20,
                     ),
-                    SizedBox(width: 12),
+                    const SizedBox(width: 12),
                     Text(
                       'Log out',
                       style: GoogleFonts.robotoMono(),

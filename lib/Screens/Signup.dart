@@ -1,10 +1,11 @@
+import 'package:blog_application/components/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:blog_application/services/google_auth.dart';
 import 'package:blog_application/components/blocks.dart';
 
 class SignupScreen extends StatefulWidget {
-  const SignupScreen({Key? key}) : super(key: key);
+  const SignupScreen({super.key});
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();
@@ -26,9 +27,11 @@ class _SignupScreenState extends State<SignupScreen> {
     final String confirmPassword = _confirmPasswordController.text.trim();
 
     if (password != confirmPassword) {
-      setState(() {
-        _errorMessage = 'Passwords do not match.';
-      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Passwords do not match.'),
+        ),
+      );
       return;
     }
 
@@ -41,27 +44,53 @@ class _SignupScreenState extends State<SignupScreen> {
 
       // Navigate to another screen or show success message
       if (userCredential.user != null) {
-        Example: Navigator.pushNamed(context, '/dashboard');
+        Navigator.pushNamed(context, '/dashboard');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('New User Created : $email'),
+          ),
+        );
       }
     } on FirebaseAuthException catch (e) {
       setState(() {
         switch (e.code) {
           case 'weak-password':
-            _errorMessage = 'The password provided is too weak.';
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('The password provided is too weak.'),
+              ),
+            );
             break;
           case 'email-already-in-use':
-            _errorMessage = 'The account already exists for that email.';
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('The account already exists for that email.'),
+              ),
+            );
             break;
           case 'invalid-email':
-            _errorMessage = 'The email address is not valid.';
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('The email address is not valid.'),
+              ),
+            );
             break;
           default:
-            _errorMessage = 'An error occurred. Please try again later.';
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('An error occurred. Please try again later.'),
+              ),
+            );
         }
       });
     } catch (e) {
       setState(() {
-        _errorMessage = 'An unexpected error occurred. Please try again later.';
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content:
+                Text('An unexpected error occurred. Please try again later.'),
+          ),
+        );
       });
     }
   }
@@ -99,53 +128,11 @@ class _SignupScreenState extends State<SignupScreen> {
                 obscureText: true,
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
+              Buttons(
                 onPressed: _signUp,
-                child: const Text('Sign Up'),
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.black,
-                ),
-              ),
-              const SizedBox(height: 10),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 52),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Divider(
-                        thickness: 0.5,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text(
-                        'Or',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    Expanded(
-                      child: Divider(
-                        thickness: 0.5,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Blocks(
-                    ontap: () {
-                      GoogleAuth().signInWithGoogle();
-                      Navigator.pop(context);
-                    },
-                    imagepath: 'assets/Google.png',
-                  ),
-                ],
+                textColor: Colors.white,
+                color: Colors.black,
+                text: "SignUp",
               ),
               const SizedBox(height: 10),
               Row(
@@ -184,7 +171,7 @@ class _SignupScreenState extends State<SignupScreen> {
         decoration: InputDecoration(
           hintText: hintText,
           prefixIcon: Icon(icon),
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
         ),
       ),
     );
@@ -198,7 +185,7 @@ class _SignupScreenState extends State<SignupScreen> {
       padding: const EdgeInsets.all(8.0),
       child: Text(
         _errorMessage,
-        style: TextStyle(color: Colors.red),
+        style: const TextStyle(color: Colors.red),
       ),
     );
   }

@@ -21,6 +21,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? userProfilePicUrl;
   int? userAge;
 
+  // Function to update user profile
+  Future<void> _updateUserProfile(String newName, int newAge) async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      try {
+        await _firestore.collection('users').doc(user.uid).update({
+          'name': newName,
+          'age': newAge,
+        });
+        setState(() {
+          userName = newName;
+          userAge = newAge;
+        });
+        print('User profile updated successfully');
+      } catch (e) {
+        print('Error updating user profile: $e');
+      }
+    } else {
+      print('Current user is null');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -36,8 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         if (userData.exists) {
           setState(() {
             userName = userData.get('name');
-            userAge = userData
-                .get('age'); // Ensure 'age' field exists and is properly stored
+            userAge = userData.get('age');
             userProfilePicUrl = userData.get('photoUrl');
             userEmail = userData.get('email');
           });
@@ -58,10 +79,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: Color(0xFFF1F4F8),
+      backgroundColor: const Color(0xFFF1F4F8),
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.maybePop(context);
           },
@@ -85,7 +106,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 Container(
                   width: MediaQuery.sizeOf(context).width,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Colors.white,
                     boxShadow: [
                       BoxShadow(
@@ -96,7 +117,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                   child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
+                    padding:
+                        const EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -104,11 +126,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           width: 70,
                           height: 70,
                           decoration: BoxDecoration(
-                            color: Color(0xFFE0E3E7),
+                            color: const Color(0xFFE0E3E7),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Padding(
-                            padding: EdgeInsets.all(2),
+                            padding: const EdgeInsets.all(2),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: userProfilePicUrl != null &&
@@ -119,7 +141,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       height: 100,
                                       fit: BoxFit.cover,
                                     )
-                                  : Icon(
+                                  : const Icon(
                                       Icons.person,
                                       size: 50,
                                       color: Colors.grey,
@@ -128,7 +150,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,8 +161,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 style: GoogleFonts.lato(fontSize: 18),
                               ),
                               Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    0, 4, 0, 0),
                                 child: Text(
                                   userEmail ?? 'Loading...',
                                   style: GoogleFonts.lato(
@@ -147,8 +170,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ),
                               Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    0, 4, 0, 0),
                                 child: Text(
                                   'Age: ${userAge ?? 'Loading...'}', // Display userAge here
                                   style: GoogleFonts.lato(
@@ -164,7 +187,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ],
             ),
-            Column(
+            const Column(
               mainAxisSize: MainAxisSize.max,
               children: [
                 Row(
@@ -184,13 +207,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
                   child: Container(
                     width: double.infinity,
                     height: 60,
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                           blurRadius: 5,
                           color: Color(0x3416202A),
@@ -201,7 +224,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       shape: BoxShape.rectangle,
                     ),
                     child: Padding(
-                      padding: EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(8),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
@@ -209,7 +232,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             onTap: () {
                               Navigator.pushNamed(context, "/resetpassword");
                             },
-                            child: Padding(
+                            child: const Padding(
                               padding:
                                   EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
                               child: Text(
@@ -217,7 +240,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                           ),
-                          Expanded(
+                          const Expanded(
                             child: Align(
                               alignment: AlignmentDirectional(0.9, 0),
                               child: Icon(
@@ -233,13 +256,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(20, 12, 20, 0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(20, 12, 20, 0),
                   child: Container(
                     width: double.infinity,
                     height: 60,
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                           blurRadius: 5,
                           color: Color(0x3416202A),
@@ -250,7 +273,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       shape: BoxShape.rectangle,
                     ),
                     child: Padding(
-                      padding: EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(8),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
@@ -258,7 +281,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             onTap: () {
                               Navigator.pushNamed(context, "/editprofile");
                             },
-                            child: Padding(
+                            child: const Padding(
                               padding:
                                   EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
                               child: Text(
@@ -266,7 +289,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                           ),
-                          Expanded(
+                          const Expanded(
                             child: Align(
                               alignment: AlignmentDirectional(0.9, 0),
                               child: Icon(
@@ -282,7 +305,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 20),
+                  padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 20),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,

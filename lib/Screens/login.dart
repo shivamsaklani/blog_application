@@ -1,3 +1,4 @@
+import 'package:blog_application/components/buttons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,7 +6,7 @@ import 'package:blog_application/components/blocks.dart';
 import 'package:blog_application/services/google_auth.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -36,45 +37,77 @@ class _LoginScreenState extends State<LoginScreen> {
         await _storeUserEmail(userCredential.user!.email!);
         // Example: Navigator.pushNamed(context, '/home');
         Navigator.pushNamed(context, '/dashboard');
-        print('Login successful for: ${userCredential.user!.email}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content:
+                Text('Login successful for: ${userCredential.user!.email}'),
+          ),
+        );
       }
     } on FirebaseAuthException catch (e) {
       setState(() {
         switch (e.code) {
           case 'user-not-found':
-            _errorMessage = 'No user found for that email.';
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('No user found for that email.'),
+              ),
+            );
             break;
           case 'wrong-password':
-            _errorMessage = 'Wrong password provided for that user.';
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Wrong password provided for that user.'),
+              ),
+            );
+
             break;
           case 'invalid-email':
-            _errorMessage = 'The email address is not valid.';
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('The email address is not valid.'),
+              ),
+            );
             break;
           default:
-            _errorMessage = 'An error occurred. Please try again later.';
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('An error occurred. Please try again later.'),
+              ),
+            );
         }
       });
     } catch (e) {
       setState(() {
-        _errorMessage = 'An unexpected error occurred. Please try again later.';
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content:
+                Text('An unexpected error occurred. Please try again later.'),
+          ),
+        );
       });
     }
   }
 
   Future<void> _storeUserEmail(String userEmail) async {
     try {
-
       await _firestore.collection('users').doc(_auth.currentUser!.uid).set({
         'email': userEmail,
-
       });
-      print('User email stored in Firestore: $userEmail');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('User email stored in Firestore: $userEmail'),
+        ),
+      );
     } catch (e) {
-      print('Error storing user email: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error storing user email: $e'),
+        ),
+      );
       // Handle Firestore errors
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -125,13 +158,11 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 10,
               ),
-              ElevatedButton(
+              Buttons(
                 onPressed: _login,
-                child: const Text('Login'),
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.black,
-                ),
+                textColor: Colors.white,
+                color: Colors.black,
+                text: "Login",
               ),
               const SizedBox(height: 10),
               const Padding(
@@ -144,7 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: Colors.white,
                       ),
                     ),
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
                         'Or',
@@ -209,7 +240,7 @@ class _LoginScreenState extends State<LoginScreen> {
         decoration: InputDecoration(
           hintText: hintText,
           prefixIcon: Icon(icon),
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
         ),
       ),
     );
@@ -223,7 +254,7 @@ class _LoginScreenState extends State<LoginScreen> {
       padding: const EdgeInsets.all(8.0),
       child: Text(
         _errorMessage,
-        style: TextStyle(color: Colors.red),
+        style: const TextStyle(color: Colors.red),
       ),
     );
   }

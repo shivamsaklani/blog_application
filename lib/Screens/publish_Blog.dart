@@ -136,8 +136,8 @@ class _PublishBlogState extends State<PublishBlog> {
               ),
               const SizedBox(height: 10),
               TextField(
+                cursorHeight: 20,
                 controller: contentController,
-                cursorHeight: 10,
                 style: const TextStyle(
                   height: 10,
                 ),

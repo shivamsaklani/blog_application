@@ -1,3 +1,4 @@
+import 'package:blog_application/components/buttons.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class EditProfileScreen extends StatefulWidget {
-  const EditProfileScreen({Key? key}) : super(key: key);
+  const EditProfileScreen({super.key});
 
   @override
   _EditProfileScreenState createState() => _EditProfileScreenState();
@@ -34,7 +35,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     User? user = _auth.currentUser;
     if (user != null) {
       DocumentSnapshot userData =
-      await _firestore.collection('users').doc(user.uid).get();
+          await _firestore.collection('users').doc(user.uid).get();
       if (userData.exists) {
         setState(() {
           _nameController.text = userData['name'];
@@ -86,7 +87,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
       try {
         DocumentSnapshot userData =
-        await _firestore.collection('users').doc(user.uid).get();
+            await _firestore.collection('users').doc(user.uid).get();
         if (userData.exists) {
           await _firestore.collection('users').doc(user.uid).update({
             'name': name,
@@ -133,50 +134,52 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (_imageFile != null)
-              CircleAvatar(
-                radius: 50,
-                backgroundImage: FileImage(_imageFile!),
-              )
-            else
-              const CircleAvatar(
-                radius: 50,
-                child: Icon(Icons.person),
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (_imageFile != null)
+                    CircleAvatar(
+                      radius: 50,
+                      backgroundImage: FileImage(_imageFile!),
+                    )
+                  else
+                    const CircleAvatar(
+                      radius: 50,
+                      child: Icon(Icons.person),
+                    ),
+                  TextButton.icon(
+                    onPressed: _pickImage,
+                    icon: const Icon(Icons.image),
+                    label: const Text('Change Photo'),
+                  ),
+                  TextField(
+                    controller: _nameController,
+                    decoration: const InputDecoration(labelText: 'Name'),
+                  ),
+                  TextField(
+                    controller: _ageController,
+                    decoration: const InputDecoration(labelText: 'Age'),
+                    keyboardType: TextInputType.number,
+                  ),
+                  const SizedBox(height: 20),
+                  Buttons(
+                    onPressed: _updateProfile,
+                    text: "save",
+                    color: const Color.fromARGB(188, 12, 188, 156),
+                    textColor: Colors.white,
+                  ),
+                  if (_errorMessage.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text(
+                        _errorMessage,
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                    ),
+                ],
               ),
-            TextButton.icon(
-              onPressed: _pickImage,
-              icon: const Icon(Icons.image),
-              label: const Text('Change Photo'),
             ),
-            TextField(
-              controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Name'),
-            ),
-            TextField(
-              controller: _ageController,
-              decoration: const InputDecoration(labelText: 'Age'),
-              keyboardType: TextInputType.number,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _updateProfile,
-              child: const Text('Save'),
-            ),
-            if (_errorMessage.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Text(
-                  _errorMessage,
-                  style: const TextStyle(color: Colors.red),
-                ),
-              ),
-          ],
-        ),
-      ),
     );
   }
 }

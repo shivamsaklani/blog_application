@@ -6,10 +6,10 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 
 import '../components/CustomDrawer.dart';
-import 'BlogPost.dart';
+import '../components/BlogPost.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({Key? key}) : super(key: key);
+  const Dashboard({super.key});
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -18,7 +18,78 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   final auth = FirebaseAuth.instance;
   final TextEditingController _searchController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
   String searchQuery = "";
+  List<Map<String, dynamic>> blogPosts = [];
+  bool isLoading = false;
+  bool hasMore = true;
+  DocumentSnapshot? lastDocument;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchBlogPosts();
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        fetchBlogPosts();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  Future<void> fetchBlogPosts() async {
+    if (isLoading || !hasMore) return;
+
+    setState(() {
+      isLoading = true;
+    });
+
+    Query query = FirebaseFirestore.instance
+        .collection('blog_posts')
+        .orderBy('timestamp')
+        .limit(10);
+
+    if (lastDocument != null) {
+      query = query.startAfterDocument(lastDocument!);
+    }
+
+    QuerySnapshot querySnapshot = await query.get();
+    if (querySnapshot.docs.isNotEmpty) {
+      lastDocument = querySnapshot.docs.last;
+      setState(() {
+        blogPosts.addAll(querySnapshot.docs
+            .map((doc) => doc.data() as Map<String, dynamic>)
+            .toList());
+        hasMore = querySnapshot.docs.length == 10;
+      });
+    } else {
+      setState(() {
+        hasMore = false;
+      });
+    }
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  Future<List<Map<String, dynamic>>> searchBlogPosts(String query) async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('blog_posts')
+        .where('title', isGreaterThanOrEqualTo: query)
+        .where('title', isLessThanOrEqualTo: '$query\uf8ff')
+        .get();
+    return querySnapshot.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,17 +110,18 @@ class _DashboardState extends State<Dashboard> {
       drawer: const CustomDrawer(),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
+        controller: _scrollController,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
           child: Column(
             children: [
               PreferredSize(
-                preferredSize: Size.fromHeight(48.0),
+                preferredSize: const Size.fromHeight(48.0),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
                     controller: _searchController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Search posts...',
                       border: OutlineInputBorder(),
                       filled: true,
@@ -59,6 +131,10 @@ class _DashboardState extends State<Dashboard> {
                     onChanged: (value) {
                       setState(() {
                         searchQuery = value.trim().toLowerCase();
+                        blogPosts.clear();
+                        lastDocument = null;
+                        hasMore = true;
+                        fetchBlogPosts();
                       });
                     },
                   ),
@@ -66,30 +142,32 @@ class _DashboardState extends State<Dashboard> {
               ),
               FutureBuilder<List<Map<String, dynamic>>>(
                 future: searchQuery.isEmpty
-                    ? fetchBlogPosts()
+                    ? Future.value(blogPosts)
                     : searchBlogPosts(searchQuery),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
+                  if (snapshot.connectionState == ConnectionState.waiting &&
+                      blogPosts.isEmpty) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return const Center(child: Text('Error fetching posts.'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return const Center(child: Text('No posts found.'));
                   } else {
-                    List<Map<String, dynamic>> blogPosts = snapshot.data!;
+                    List<Map<String, dynamic>> displayedPosts =
+                        snapshot.data!;
                     return Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 52),
+                      padding: const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 52),
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
                             padding:
-                                EdgeInsetsDirectional.fromSTEB(16, 16, 0, 0),
+                                const EdgeInsetsDirectional.fromSTEB(16, 16, 0, 0),
                             child: Text(
                               'Blogs',
                               style: GoogleFonts.plusJakartaSans(
-                                color: Color(0xFF57636C),
+                                color: const Color(0xFF57636C),
                                 fontSize: 16,
                                 letterSpacing: 0,
                                 fontWeight: FontWeight.w500,
@@ -97,14 +175,16 @@ class _DashboardState extends State<Dashboard> {
                             ),
                           ),
                           const SizedBox(height: 10),
-                          ...blogPosts.map((post) {
+                          ...displayedPosts.map((post) {
                             return BlogPost(
                               imageUrl: post['imageUrl'] ?? '',
                               title: post['title'] ?? '',
                               description: post['content'] ?? '',
                               postId: post['postId'] ?? '',
                             );
-                          }).toList(),
+                          }),
+                          if (isLoading)
+                            const Center(child: CircularProgressIndicator()),
                         ],
                       ),
                     );
@@ -144,24 +224,5 @@ class _DashboardState extends State<Dashboard> {
         ),
       ),
     );
-  }
-
-  Future<List<Map<String, dynamic>>> fetchBlogPosts() async {
-    QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection('blog_posts').get();
-    return querySnapshot.docs
-        .map((doc) => doc.data() as Map<String, dynamic>)
-        .toList();
-  }
-
-  Future<List<Map<String, dynamic>>> searchBlogPosts(String query) async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('blog_posts')
-        .where('title', isGreaterThanOrEqualTo: query)
-        .where('title', isLessThanOrEqualTo: query + '\uf8ff')
-        .get();
-    return querySnapshot.docs
-        .map((doc) => doc.data() as Map<String, dynamic>)
-        .toList();
   }
 }

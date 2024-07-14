@@ -5,14 +5,12 @@ import 'package:google_fonts/google_fonts.dart';
 class PostDetailsScreen extends StatelessWidget {
   final String postId;
 
-  const PostDetailsScreen({required this.postId});
+  const PostDetailsScreen({super.key, required this.postId});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Post Details'),
-      ),
+      appBar: AppBar(),
       body: FutureBuilder<DocumentSnapshot>(
         future: FirebaseFirestore.instance
             .collection('blog_posts')
@@ -20,19 +18,19 @@ class PostDetailsScreen extends StatelessWidget {
             .get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
           if (!snapshot.hasData || !snapshot.data!.exists) {
-            return Center(child: Text('Post not found'));
+            return const Center(child: Text('Post not found'));
           }
 
           var postData = snapshot.data!.data() as Map<String, dynamic>? ?? {};
 
           return Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -45,20 +43,20 @@ class PostDetailsScreen extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Text(
                   postData['title'] ?? 'No Title',
                   style: GoogleFonts.leagueSpartan(
-                    color: Color(0xFF101213),
+                    color: const Color(0xFF101213),
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
                   postData['description'] ?? 'No Description',
                   style: GoogleFonts.leagueSpartan(
-                    color: Color.fromARGB(255, 84, 87, 88),
+                    color: const Color.fromARGB(255, 84, 87, 88),
                     fontSize: 16,
                   ),
                 ),
