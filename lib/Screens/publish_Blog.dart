@@ -37,7 +37,7 @@ class _PublishBlogState extends State<PublishBlog> {
         pickedImage == null) {
       SmartSnackBars.showTemplatedSnackbar(
         context: context,
-        backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+        backgroundColor: const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
         leading: Text(
           'Please fill in all fields and select an image.',
           style: GoogleFonts.lato(
@@ -61,7 +61,7 @@ class _PublishBlogState extends State<PublishBlog> {
       Navigator.maybePop(context);
       SmartSnackBars.showTemplatedSnackbar(
         context: context,
-        backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+        backgroundColor: const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
         leading: Text(
           'Blog post submitted successfully!',
           style: GoogleFonts.lato(
@@ -83,7 +83,7 @@ class _PublishBlogState extends State<PublishBlog> {
       });
       SmartSnackBars.showTemplatedSnackbar(
         context: context,
-        backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+        backgroundColor: const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
         leading: Text(
           'Failed to submit blog post: $e',
           style: GoogleFonts.lato(

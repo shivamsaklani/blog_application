@@ -86,9 +86,32 @@ class _DashboardState extends State<Dashboard> {
         .where('title', isGreaterThanOrEqualTo: query)
         .where('title', isLessThanOrEqualTo: '$query\uf8ff')
         .get();
-    return querySnapshot.docs
+
+    QuerySnapshot contentSnapshot = await FirebaseFirestore.instance
+        .collection('blog_posts')
+        .where('content', arrayContains: query)
+        .get();
+
+    // Combine results from title and content searches
+    List<QueryDocumentSnapshot> combinedDocs =
+        querySnapshot.docs + contentSnapshot.docs;
+
+    // Remove duplicates
+    final seen = <String>{};
+    List<Map<String, dynamic>> blogPosts = combinedDocs
+        .where((doc) {
+          final id = doc.id;
+          if (seen.contains(id)) {
+            return false;
+          } else {
+            seen.add(id);
+            return true;
+          }
+        })
         .map((doc) => doc.data() as Map<String, dynamic>)
         .toList();
+
+    return blogPosts;
   }
 
   @override
@@ -123,7 +146,14 @@ class _DashboardState extends State<Dashboard> {
                     controller: _searchController,
                     decoration: const InputDecoration(
                       hintText: 'Search posts...',
-                      border: OutlineInputBorder(),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(30)),
+                          borderSide: BorderSide(
+                            color: const Color.fromARGB(188, 12, 188, 156),
+                          )),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                      ),
                       filled: true,
                       fillColor: Colors.white,
                       prefixIcon: Icon(Icons.search),
@@ -154,38 +184,33 @@ class _DashboardState extends State<Dashboard> {
                     return const Center(child: Text('No posts found.'));
                   } else {
                     List<Map<String, dynamic>> displayedPosts = snapshot.data!;
-                    return Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 52),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                5, 5, 0, 0),
-                            child: Text(
-                              'Blogs',
-                              style: GoogleFonts.plusJakartaSans(
-                                color: const Color(0xFF57636C),
-                                fontSize: 16,
-                                letterSpacing: 0,
-                                fontWeight: FontWeight.w500,
-                              ),
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(5, 5, 0, 0),
+                          child: Text(
+                            'Blogs',
+                            style: GoogleFonts.plusJakartaSans(
+                              color: const Color(0xFF57636C),
+                              fontSize: 16,
+                              letterSpacing: 0,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                          const SizedBox(height: 10),
-                          ...displayedPosts.map((post) {
-                            return BlogPost(
-                              imageUrl: post['imageUrl'] ?? '',
-                              title: post['title'] ?? '',
-                              description: post['content'] ?? '',
-                              postId: post['postId'] ?? '',
-                            );
-                          }),
-                          if (isLoading)
-                            const Center(child: CircularProgressIndicator()),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(height: 10),
+                        ...displayedPosts.map((post) {
+                          return BlogPost(
+                            imageUrl: post['imageUrl'] ?? '',
+                            title: post['title'] ?? '',
+                            postId: post['postId'] ?? '',
+                          );
+                        }),
+                        if (isLoading)
+                          const Center(child: CircularProgressIndicator()),
+                      ],
                     );
                   }
                 },

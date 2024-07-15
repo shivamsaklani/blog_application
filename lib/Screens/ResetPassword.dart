@@ -29,7 +29,7 @@ class _ResetpasswordState extends State<Resetpassword> {
           .sendPasswordResetEmail(email: _resetpassword.text.trim());
       SmartSnackBars.showTemplatedSnackbar(
         context: context,
-        backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+        backgroundColor: const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
         leading: Text(
           'Mail Sent Successfully',
           style: GoogleFonts.lato(
@@ -42,7 +42,8 @@ class _ResetpasswordState extends State<Resetpassword> {
       if (e.code == 'user-not-found') {
         SmartSnackBars.showTemplatedSnackbar(
           context: context,
-          backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+          backgroundColor:
+              const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
           leading: Text(
             'The email address you entered is not registered.',
             style: GoogleFonts.lato(
@@ -54,7 +55,8 @@ class _ResetpasswordState extends State<Resetpassword> {
       } else if (e.code == 'invalid-email') {
         SmartSnackBars.showTemplatedSnackbar(
           context: context,
-          backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+          backgroundColor:
+              const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
           leading: Text(
             'Please enter a valid email address.',
             style: GoogleFonts.lato(
@@ -66,7 +68,8 @@ class _ResetpasswordState extends State<Resetpassword> {
       } else {
         SmartSnackBars.showTemplatedSnackbar(
           context: context,
-          backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+          backgroundColor:
+              const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
           leading: Text(
             'An unexpected error occurred. Please try again later.',
             style: GoogleFonts.lato(
@@ -79,7 +82,7 @@ class _ResetpasswordState extends State<Resetpassword> {
     } catch (e) {
       SmartSnackBars.showTemplatedSnackbar(
         context: context,
-        backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+        backgroundColor: const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
         leading: Text(
           'An error occurred. Please try again later.',
           style: GoogleFonts.lato(

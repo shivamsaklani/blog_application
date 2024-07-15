@@ -42,7 +42,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
         SmartSnackBars.showTemplatedSnackbar(
           context: context,
-          backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+          backgroundColor:
+              const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
           leading: Text(
             "Login successful for: ${userCredential.user!.email}",
             style: GoogleFonts.lato(
@@ -58,7 +59,8 @@ class _LoginScreenState extends State<LoginScreen> {
           case 'user-not-found':
             SmartSnackBars.showTemplatedSnackbar(
               context: context,
-              backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+              backgroundColor:
+                  const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
               leading: Text(
                 "No user found for that email.",
                 style: GoogleFonts.lato(
@@ -72,7 +74,8 @@ class _LoginScreenState extends State<LoginScreen> {
           case 'wrong-password':
             SmartSnackBars.showTemplatedSnackbar(
               context: context,
-              backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+              backgroundColor:
+                  const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
               leading: Text(
                 "Wrong password provided for that user.",
                 style: GoogleFonts.lato(
@@ -86,7 +89,8 @@ class _LoginScreenState extends State<LoginScreen> {
           case 'invalid-email':
             SmartSnackBars.showTemplatedSnackbar(
               context: context,
-              backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+              backgroundColor:
+                  const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
               leading: Text(
                 "The email address is not valid.",
                 style: GoogleFonts.lato(
@@ -99,7 +103,8 @@ class _LoginScreenState extends State<LoginScreen> {
           default:
             SmartSnackBars.showTemplatedSnackbar(
               context: context,
-              backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+              backgroundColor:
+                  const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
               leading: Text(
                 'An error occurred. Please try again later.',
                 style: GoogleFonts.lato(
@@ -114,7 +119,8 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         SmartSnackBars.showTemplatedSnackbar(
           context: context,
-          backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+          backgroundColor:
+              const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
           leading: Text(
             'An unexpected error occurred. Please try again later.',
             style: GoogleFonts.lato(
@@ -134,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
       SmartSnackBars.showTemplatedSnackbar(
         context: context,
-        backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+        backgroundColor: const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
         leading: Text(
           'User email stored in Firestore: $userEmail',
           style: GoogleFonts.lato(
@@ -146,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } catch (e) {
       SmartSnackBars.showTemplatedSnackbar(
         context: context,
-        backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+        backgroundColor: const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
         leading: Text(
           'Error storing user email: $e',
           style: GoogleFonts.lato(
@@ -174,6 +180,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 fit: BoxFit.fill,
               ),
               const SizedBox(height: 20),
+              Text(
+                "Login",
+                style: GoogleFonts.lato(
+                  fontSize: 20,
+                  color: Colors.black,
+                ),
+              ),
               _buildErrorMessage(),
               _buildTextField(
                 controller: _emailController,
@@ -186,7 +199,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 icon: Icons.lock,
                 obscureText: true,
               ),
-              const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Row(
@@ -196,10 +208,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       onTap: () {
                         Navigator.pushNamed(context, "/resetpassword");
                       },
-                      child: const Text(
-                        "Forgot password?",
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 0, 0, 0),
+                      child: Text(
+                        "Forgot Password",
+                        style: GoogleFonts.lato(
+                          fontSize: 16,
+                          color: Colors.black,
                         ),
                       ),
                     ),
@@ -207,7 +220,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(
-                height: 10,
+                height: 1,
               ),
               Buttons(
                 onPressed: _login,
@@ -223,20 +236,21 @@ class _LoginScreenState extends State<LoginScreen> {
                     Expanded(
                       child: Divider(
                         thickness: 0.5,
-                        color: Colors.white,
+                        color: Color.fromARGB(255, 143, 139, 139),
                       ),
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
                         'Or',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 143, 139, 139)),
                       ),
                     ),
                     Expanded(
                       child: Divider(
                         thickness: 0.5,
-                        color: Colors.white,
+                        color: Color.fromARGB(255, 143, 139, 139),
                       ),
                     ),
                   ],
@@ -258,12 +272,15 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  const Text('New User?'),
+                  Text(
+                    'New User?',
+                    style: GoogleFonts.lato(),
+                  ),
                   InkWell(
                     onTap: () {
                       Navigator.pushNamed(context, '/signup');
                     },
-                    child: const Text(
+                    child: Text(
                       'Signup',
                       style: TextStyle(
                         color: Color.fromARGB(255, 6, 88, 32),

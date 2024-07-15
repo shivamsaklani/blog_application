@@ -44,7 +44,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
       // Navigate to another screen or show success message
       if (userCredential.user != null) {
-        message = 'email sent to $email. Please verify.';
+        message = 'email sent to $email.';
       }
     } on FirebaseAuthException catch (e) {
       setState(() {
@@ -72,8 +72,8 @@ class _SignupScreenState extends State<SignupScreen> {
     } finally {
       SmartSnackBars.showTemplatedSnackbar(
         context: context,
-        backgroundColor: const Color.fromARGB(188, 12, 188, 156),
-        leading: Container(
+        backgroundColor: const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
+        trailing: Container(
           child: Text(
             message,
             style: GoogleFonts.lato(
@@ -100,6 +100,13 @@ class _SignupScreenState extends State<SignupScreen> {
                 fit: BoxFit.fill,
               ),
               const SizedBox(height: 20),
+              Text(
+                "SignUp",
+                style: GoogleFonts.lato(
+                  fontSize: 20,
+                  color: Colors.black,
+                ),
+              ),
               _buildErrorMessage(),
               _buildTextField(
                 controller: _emailController,
@@ -129,7 +136,10 @@ class _SignupScreenState extends State<SignupScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  const Text('Already have an account?'),
+                  Text(
+                    'Already have an account?',
+                    style: GoogleFonts.lato(),
+                  ),
                   InkWell(
                     onTap: () => Navigator.pop(context),
                     child: const Text(

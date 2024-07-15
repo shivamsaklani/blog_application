@@ -5,14 +5,12 @@ import 'package:google_fonts/google_fonts.dart';
 class BlogPost extends StatelessWidget {
   final String imageUrl;
   final String title;
-  final String description;
   final String postId; // Add postId
 
   const BlogPost({
     super.key,
     required this.imageUrl,
     required this.title,
-    required this.description,
     required this.postId, // Add postId
   });
 
@@ -28,18 +26,18 @@ class BlogPost extends StatelessWidget {
         );
       },
       child: Padding(
-        padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 8),
+        padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
         child: Container(
           width: double.infinity,
           decoration: BoxDecoration(
             color: Colors.white,
             boxShadow: const [
               BoxShadow(
-                blurRadius: 3,
+                blurRadius: 5,
                 color: Color(0x411D2429),
                 offset: Offset(
                   0.0,
-                  1,
+                  5,
                 ),
               )
             ],
@@ -70,19 +68,6 @@ class BlogPost extends StatelessWidget {
                     style: GoogleFonts.leagueSpartan(
                       color: const Color(0xFF101213),
                       fontSize: 22,
-                      letterSpacing: 0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(16, 4, 8, 0),
-                  child: Text(
-                    description,
-                    textAlign: TextAlign.start,
-                    style: GoogleFonts.leagueSpartan(
-                      color: const Color.fromARGB(255, 84, 87, 88),
-                      fontSize: 16,
                       letterSpacing: 0,
                       fontWeight: FontWeight.bold,
                     ),

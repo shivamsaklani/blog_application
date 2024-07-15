@@ -61,6 +61,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         foregroundColor: const Color.fromARGB(188, 12, 188, 156),
         title: Text("Posts"),
@@ -87,68 +88,70 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
           String formattedDate =
               DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
 
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(6),
-                  child: Image.network(
-                    postData['imageUrl'] ?? '',
-                    width: double.infinity,
-                    height: 200,
-                    fit: BoxFit.cover,
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(6),
+                    child: Image.network(
+                      postData['imageUrl'] ?? '',
+                      width: double.infinity,
+                      height: 200,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  postData['title'] ?? 'No Title',
-                  style: GoogleFonts.leagueSpartan(
-                    color: const Color(0xFF101213),
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+                  const SizedBox(height: 16),
+                  Text(
+                    postData['title'] ?? 'No Title',
+                    style: GoogleFonts.leagueSpartan(
+                      color: const Color(0xFF101213),
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        postData['content'] ?? 'No Description',
-                        style: GoogleFonts.leagueSpartan(
-                          color: const Color.fromARGB(255, 84, 87, 88),
-                          fontSize: 16,
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          postData['content'] ?? 'No Description',
+                          style: GoogleFonts.leagueSpartan(
+                            color: const Color.fromARGB(255, 84, 87, 88),
+                            fontSize: 16,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Posted on: $formattedDate',
-                  style: GoogleFonts.leagueSpartan(
-                    color: const Color.fromARGB(255, 84, 87, 88),
-                    fontSize: 14,
+                    ],
                   ),
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(
-                        isLiked ? Icons.favorite : Icons.favorite_border,
-                        color: isLiked ? Colors.red : Colors.grey,
+                  const SizedBox(height: 8),
+                  Text(
+                    'Posted on: $formattedDate',
+                    style: GoogleFonts.leagueSpartan(
+                      color: const Color.fromARGB(255, 84, 87, 88),
+                      fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          isLiked ? Icons.favorite : Icons.favorite_border,
+                          color: isLiked ? Colors.red : Colors.grey,
+                        ),
+                        onPressed: toggleLike,
                       ),
-                      onPressed: toggleLike,
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.share),
-                      onPressed: () {},
-                    ),
-                  ],
-                ),
-              ],
+                      IconButton(
+                        icon: Icon(Icons.share),
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           );
         },

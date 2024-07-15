@@ -15,7 +15,7 @@ class Blocks extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(color: Colors.white),
           borderRadius: BorderRadius.circular(10),
-          color: Colors.grey.shade100,
+          color: Color.fromARGB(255, 31, 30, 30),
         ),
         child: Image.asset(
           imagepath,

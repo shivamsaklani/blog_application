@@ -47,7 +47,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         } else {
           SmartSnackBars.showTemplatedSnackbar(
             context: context,
-            backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+            backgroundColor:
+                const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
             leading: Text(
               "Please Fill up your Details",
               style: GoogleFonts.lato(
@@ -59,7 +60,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       } catch (e) {
         SmartSnackBars.showTemplatedSnackbar(
           context: context,
-          backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+          backgroundColor:
+              const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
           leading: Text(
             "Error fetching user data: $e",
             style: GoogleFonts.lato(
@@ -71,7 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     } else {
       SmartSnackBars.showTemplatedSnackbar(
         context: context,
-        backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+        backgroundColor: const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
         leading: Text(
           "No details Found",
           style: GoogleFonts.lato(
