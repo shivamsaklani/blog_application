@@ -1,6 +1,5 @@
 import 'package:blog_application/Screens/EditProfileScreen.dart';
 import 'package:blog_application/Screens/Profile.dart';
-import 'package:blog_application/pages/text_editor.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:blog_application/Screens/ResetPassword.dart';

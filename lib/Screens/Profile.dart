@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:smart_snackbars/smart_snackbars.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -44,23 +45,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
             userEmail = user.email;
           });
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text("Please fill your profile: ${user.uid}"),
+          SmartSnackBars.showTemplatedSnackbar(
+            context: context,
+            backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+            leading: Text(
+              "Please Fill up your Details",
+              style: GoogleFonts.lato(
+                color: Colors.white,
+              ),
             ),
           );
         }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Error fetching user data: $e"),
+        SmartSnackBars.showTemplatedSnackbar(
+          context: context,
+          backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+          leading: Text(
+            "Error fetching user data: $e",
+            style: GoogleFonts.lato(
+              color: Colors.white,
+            ),
           ),
         );
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("No details Found"),
+      SmartSnackBars.showTemplatedSnackbar(
+        context: context,
+        backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+        leading: Text(
+          "No details Found",
+          style: GoogleFonts.lato(
+            color: Colors.white,
+          ),
         ),
       );
     }
@@ -148,14 +164,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                userName ?? 'Loading...',
+                                userName ?? 'Please Fillup',
                                 style: GoogleFonts.lato(fontSize: 18),
                               ),
                               Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
                                     0, 4, 0, 0),
                                 child: Text(
-                                  userEmail ?? 'Loading...',
+                                  userEmail ?? 'Please Fillup',
                                   style: GoogleFonts.lato(
                                       fontSize: 16, color: Colors.grey),
                                 ),
@@ -164,7 +180,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 padding: const EdgeInsetsDirectional.fromSTEB(
                                     0, 4, 0, 0),
                                 child: Text(
-                                  'Age: ${userAge ?? 'Loading...'}', // Display userAge here
+                                  'Age: ${userAge ?? 'Please Fillup'}', // Display userAge here
                                   style: GoogleFonts.lato(
                                       fontSize: 16, color: Colors.grey),
                                 ),

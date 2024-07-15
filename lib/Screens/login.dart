@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:blog_application/components/blocks.dart';
 import 'package:blog_application/services/google_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:smart_snackbars/smart_snackbars.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -37,10 +39,16 @@ class _LoginScreenState extends State<LoginScreen> {
         await _storeUserEmail(userCredential.user!.email!);
         // Example: Navigator.pushNamed(context, '/home');
         Navigator.pushNamed(context, '/dashboard');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content:
-                Text('Login successful for: ${userCredential.user!.email}'),
+
+        SmartSnackBars.showTemplatedSnackbar(
+          context: context,
+          backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+          leading: Text(
+            "Login successful for: ${userCredential.user!.email}",
+            style: GoogleFonts.lato(
+              fontSize: 12,
+              color: Colors.white,
+            ),
           ),
         );
       }
@@ -48,41 +56,71 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         switch (e.code) {
           case 'user-not-found':
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('No user found for that email.'),
+            SmartSnackBars.showTemplatedSnackbar(
+              context: context,
+              backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+              leading: Text(
+                "No user found for that email.",
+                style: GoogleFonts.lato(
+                  fontSize: 12,
+                  color: Colors.white,
+                ),
               ),
             );
+
             break;
           case 'wrong-password':
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Wrong password provided for that user.'),
+            SmartSnackBars.showTemplatedSnackbar(
+              context: context,
+              backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+              leading: Text(
+                "Wrong password provided for that user.",
+                style: GoogleFonts.lato(
+                  fontSize: 12,
+                  color: Colors.white,
+                ),
               ),
             );
 
             break;
           case 'invalid-email':
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('The email address is not valid.'),
+            SmartSnackBars.showTemplatedSnackbar(
+              context: context,
+              backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+              leading: Text(
+                "The email address is not valid.",
+                style: GoogleFonts.lato(
+                  fontSize: 12,
+                  color: Colors.white,
+                ),
               ),
             );
             break;
           default:
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('An error occurred. Please try again later.'),
+            SmartSnackBars.showTemplatedSnackbar(
+              context: context,
+              backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+              leading: Text(
+                'An error occurred. Please try again later.',
+                style: GoogleFonts.lato(
+                  fontSize: 12,
+                  color: Colors.white,
+                ),
               ),
             );
         }
       });
     } catch (e) {
       setState(() {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content:
-                Text('An unexpected error occurred. Please try again later.'),
+        SmartSnackBars.showTemplatedSnackbar(
+          context: context,
+          backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+          leading: Text(
+            'An unexpected error occurred. Please try again later.',
+            style: GoogleFonts.lato(
+              fontSize: 12,
+              color: Colors.white,
+            ),
           ),
         );
       });
@@ -94,17 +132,30 @@ class _LoginScreenState extends State<LoginScreen> {
       await _firestore.collection('users').doc(_auth.currentUser!.uid).set({
         'email': userEmail,
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('User email stored in Firestore: $userEmail'),
+      SmartSnackBars.showTemplatedSnackbar(
+        context: context,
+        backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+        leading: Text(
+          'User email stored in Firestore: $userEmail',
+          style: GoogleFonts.lato(
+            fontSize: 12,
+            color: Colors.white,
+          ),
         ),
       );
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error storing user email: $e'),
+      SmartSnackBars.showTemplatedSnackbar(
+        context: context,
+        backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+        leading: Text(
+          'Error storing user email: $e',
+          style: GoogleFonts.lato(
+            fontSize: 12,
+            color: Colors.white,
+          ),
         ),
       );
+
       // Handle Firestore errors
     }
   }

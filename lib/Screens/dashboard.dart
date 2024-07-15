@@ -158,12 +158,11 @@ class _DashboardState extends State<Dashboard> {
                       padding:
                           const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 52),
                       child: Column(
-                        mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
                             padding: const EdgeInsetsDirectional.fromSTEB(
-                                16, 16, 0, 0),
+                                5, 5, 0, 0),
                             child: Text(
                               'Blogs',
                               style: GoogleFonts.plusJakartaSans(
@@ -210,7 +209,6 @@ class _DashboardState extends State<Dashboard> {
           tabs: [
             const GButton(
               icon: LineIcons.home,
-              
             ),
             GButton(
               icon: LineIcons.plus,

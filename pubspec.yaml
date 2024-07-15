@@ -48,6 +48,8 @@ dependencies:
   path_provider: ^2.0.5
   html_editor_enhanced: ^2.6.0
   image: ^4.2.0
+  smart_snackbars: ^1.0.0
+
  
  
   

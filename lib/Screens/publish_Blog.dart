@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:smart_snackbars/smart_snackbars.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:io';
 import '../components/buttons.dart';
@@ -33,11 +35,18 @@ class _PublishBlogState extends State<PublishBlog> {
     if (titleController.text.isEmpty ||
         contentController.text.isEmpty ||
         pickedImage == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please fill in all fields and select an image.'),
+      SmartSnackBars.showTemplatedSnackbar(
+        context: context,
+        backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+        leading: Text(
+          'Please fill in all fields and select an image.',
+          style: GoogleFonts.lato(
+            fontSize: 12,
+            color: Colors.white,
+          ),
         ),
       );
+
       return;
     }
 
@@ -49,10 +58,16 @@ class _PublishBlogState extends State<PublishBlog> {
       final String imageUrl = await uploadImage(File(pickedImage!.path));
       await saveBlogPost(
           titleController.text, contentController.text, imageUrl);
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Blog post submitted successfully!'),
+      Navigator.maybePop(context);
+      SmartSnackBars.showTemplatedSnackbar(
+        context: context,
+        backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+        leading: Text(
+          'Blog post submitted successfully!',
+          style: GoogleFonts.lato(
+            fontSize: 12,
+            color: Colors.white,
+          ),
         ),
       );
 
@@ -66,9 +81,15 @@ class _PublishBlogState extends State<PublishBlog> {
       setState(() {
         isLoading = false;
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to submit blog post: $e'),
+      SmartSnackBars.showTemplatedSnackbar(
+        context: context,
+        backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+        leading: Text(
+          'Failed to submit blog post: $e',
+          style: GoogleFonts.lato(
+            fontSize: 12,
+            color: Colors.white,
+          ),
         ),
       );
     }

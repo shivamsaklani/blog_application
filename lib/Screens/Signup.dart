@@ -1,6 +1,8 @@
 import 'package:blog_application/components/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:smart_snackbars/smart_snackbars.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -23,13 +25,10 @@ class _SignupScreenState extends State<SignupScreen> {
     final String email = _emailController.text.trim();
     final String password = _passwordController.text.trim();
     final String confirmPassword = _confirmPasswordController.text.trim();
-
+    String message = '';
     if (password != confirmPassword) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Passwords do not match.'),
-        ),
-      );
+      message = 'Passwords do not match.';
+
       return;
     }
 
@@ -40,56 +39,50 @@ class _SignupScreenState extends State<SignupScreen> {
         password: password,
       );
 
+      // Send email verification
+      await userCredential.user?.sendEmailVerification();
+
       // Navigate to another screen or show success message
       if (userCredential.user != null) {
-        Navigator.pushNamed(context, '/dashboard');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('New User Created : $email'),
-          ),
-        );
+        message = 'email sent to $email. Please verify.';
       }
     } on FirebaseAuthException catch (e) {
       setState(() {
         switch (e.code) {
           case 'weak-password':
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('The password provided is too weak.'),
-              ),
-            );
+            message = 'The password provided is too weak.';
+
             break;
           case 'email-already-in-use':
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('The account already exists for that email.'),
-              ),
-            );
+            message = "The account already exists for that email.";
+
             break;
           case 'invalid-email':
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('The email address is not valid.'),
-              ),
-            );
+            message = 'The email address is not valid.';
+
             break;
           default:
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('An error occurred. Please try again later.'),
-              ),
-            );
+            message = 'An error occurred. Please try again later.';
         }
       });
     } catch (e) {
       setState(() {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content:
-                Text('An unexpected error occurred. Please try again later.'),
-          ),
-        );
+        message = 'An unexpected error occurred. Please try again later.';
       });
+    } finally {
+      SmartSnackBars.showTemplatedSnackbar(
+        context: context,
+        backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+        leading: Container(
+          child: Text(
+            message,
+            style: GoogleFonts.lato(
+              fontSize: 12,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      );
     }
   }
 

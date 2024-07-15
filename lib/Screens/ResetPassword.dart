@@ -4,6 +4,7 @@ import 'package:blog_application/components/buttons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:smart_snackbars/smart_snackbars.dart';
 
 class Resetpassword extends StatefulWidget {
   const Resetpassword({super.key});
@@ -26,36 +27,65 @@ class _ResetpasswordState extends State<Resetpassword> {
     try {
       await FirebaseAuth.instance
           .sendPasswordResetEmail(email: _resetpassword.text.trim());
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Mail sent Successfully'),
+      SmartSnackBars.showTemplatedSnackbar(
+        context: context,
+        backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+        leading: Text(
+          'Mail Sent Successfully',
+          style: GoogleFonts.lato(
+            fontSize: 12,
+            color: Colors.white,
+          ),
         ),
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('The email address you entered is not registered.'),
+        SmartSnackBars.showTemplatedSnackbar(
+          context: context,
+          backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+          leading: Text(
+            'The email address you entered is not registered.',
+            style: GoogleFonts.lato(
+              fontSize: 12,
+              color: Colors.white,
+            ),
           ),
         );
       } else if (e.code == 'invalid-email') {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Please enter a valid email address.'),
+        SmartSnackBars.showTemplatedSnackbar(
+          context: context,
+          backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+          leading: Text(
+            'Please enter a valid email address.',
+            style: GoogleFonts.lato(
+              fontSize: 12,
+              color: Colors.white,
+            ),
           ),
         );
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content:
-                Text('An unexpected error occurred. Please try again later.'),
+        SmartSnackBars.showTemplatedSnackbar(
+          context: context,
+          backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+          leading: Text(
+            'An unexpected error occurred. Please try again later.',
+            style: GoogleFonts.lato(
+              fontSize: 12,
+              color: Colors.white,
+            ),
           ),
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('An error occurred. Please try again later.'),
+      SmartSnackBars.showTemplatedSnackbar(
+        context: context,
+        backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+        leading: Text(
+          'An error occurred. Please try again later.',
+          style: GoogleFonts.lato(
+            fontSize: 12,
+            color: Colors.white,
+          ),
         ),
       );
     }
@@ -85,7 +115,7 @@ class _ResetpasswordState extends State<Resetpassword> {
                   padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
                   child: Text(
                     'Forgot Password',
-                    style: GoogleFonts.jua(
+                    style: GoogleFonts.plusJakartaSans(
                       color: const Color(0xFF15161E),
                       fontSize: 24,
                       letterSpacing: 0,
@@ -97,7 +127,7 @@ class _ResetpasswordState extends State<Resetpassword> {
                   padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 16),
                   child: Text(
                     'We will send you an email with a link to reset your password, please enter the email associated with your account below.',
-                    style: GoogleFonts.jua(
+                    style: GoogleFonts.plusJakartaSans(
                       color: const Color(0xFF606A85),
                       fontSize: 14,
                       letterSpacing: 0,
@@ -115,14 +145,14 @@ class _ResetpasswordState extends State<Resetpassword> {
                       obscureText: false,
                       decoration: InputDecoration(
                         labelText: 'Your email address...',
-                        labelStyle: GoogleFonts.jua(
+                        labelStyle: GoogleFonts.plusJakartaSans(
                           color: const Color(0xFF606A85),
                           fontSize: 14,
                           letterSpacing: 0,
                           fontWeight: FontWeight.w500,
                         ),
                         hintText: 'Enter your email...',
-                        hintStyle: GoogleFonts.jua(
+                        hintStyle: GoogleFonts.plusJakartaSans(
                           color: const Color(0xFF606A85),
                           fontSize: 14,
                           letterSpacing: 0,
@@ -161,7 +191,7 @@ class _ResetpasswordState extends State<Resetpassword> {
                         contentPadding: const EdgeInsetsDirectional.fromSTEB(
                             24, 24, 20, 24),
                       ),
-                      style: GoogleFonts.jua(
+                      style: GoogleFonts.plusJakartaSans(
                         color: const Color(0xFF15161E),
                         fontSize: 14,
                         letterSpacing: 0,
@@ -183,6 +213,7 @@ class _ResetpasswordState extends State<Resetpassword> {
                       textColor: Colors.white,
                       onPressed: () async {
                         passwordreset();
+                        _resetpassword.clear();
                       },
                       text: 'Send Link',
                     ),

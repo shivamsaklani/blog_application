@@ -3,8 +3,11 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+
+import 'package:smart_snackbars/smart_snackbars.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -59,7 +62,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Future<void> _updateProfile() async {
     setState(() {
       _isLoading = true;
-      _errorMessage = '';
+      _errorMessage = 'Successfully Saved Profile';
     });
 
     String name = _nameController.text.trim();
@@ -112,6 +115,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           _isLoading = false;
           _errorMessage = 'Failed to update profile: $e';
         });
+      } finally {
+        SmartSnackBars.showTemplatedSnackbar(
+          context: context,
+          backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+          leading: Text(
+            _errorMessage,
+            style: GoogleFonts.lato(
+              fontSize: 12,
+              color: Colors.white,
+            ),
+          ),
+        );
       }
     }
   }
