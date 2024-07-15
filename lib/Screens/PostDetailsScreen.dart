@@ -1,20 +1,74 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart'; // Import this package for date formatting
 
-class PostDetailsScreen extends StatelessWidget {
+class PostDetailsScreen extends StatefulWidget {
   final String postId;
 
   const PostDetailsScreen({super.key, required this.postId});
 
   @override
+  _PostDetailsScreenState createState() => _PostDetailsScreenState();
+}
+
+class _PostDetailsScreenState extends State<PostDetailsScreen> {
+  bool isLiked = false;
+  User? user; // Store the current user
+
+  @override
+  void initState() {
+    super.initState();
+    user = FirebaseAuth.instance.currentUser;
+    checkIfLiked();
+  }
+
+  void checkIfLiked() async {
+    if (user != null) {
+      var doc = await FirebaseFirestore.instance
+          .collection('blog_posts')
+          .doc(widget.postId)
+          .get();
+      var postData = doc.data() as Map<String, dynamic>? ?? {};
+      var likes = postData['likes'] as List<dynamic>? ?? [];
+      setState(() {
+        isLiked = likes.contains(user!.uid);
+      });
+    }
+  }
+
+  void toggleLike() {
+    if (user == null) return;
+
+    setState(() {
+      isLiked = !isLiked;
+    });
+
+    var postRef =
+        FirebaseFirestore.instance.collection('blog_posts').doc(widget.postId);
+    if (isLiked) {
+      postRef.update({
+        'likes': FieldValue.arrayUnion([user!.uid]),
+      });
+    } else {
+      postRef.update({
+        'likes': FieldValue.arrayRemove([user!.uid]),
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        foregroundColor: const Color.fromARGB(188, 12, 188, 156),
+        title: Text("Posts"),
+      ),
       body: FutureBuilder<DocumentSnapshot>(
         future: FirebaseFirestore.instance
             .collection('blog_posts')
-            .doc(postId)
+            .doc(widget.postId)
             .get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -28,6 +82,10 @@ class PostDetailsScreen extends StatelessWidget {
           }
 
           var postData = snapshot.data!.data() as Map<String, dynamic>? ?? {};
+          Timestamp timestamp = postData['timestamp'] ?? Timestamp.now();
+          DateTime dateTime = timestamp.toDate();
+          String formattedDate =
+              DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
 
           return Padding(
             padding: const EdgeInsets.all(16.0),
@@ -53,12 +111,42 @@ class PostDetailsScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        postData['content'] ?? 'No Description',
+                        style: GoogleFonts.leagueSpartan(
+                          color: const Color.fromARGB(255, 84, 87, 88),
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
                 Text(
-                  postData['description'] ?? 'No Description',
+                  'Posted on: $formattedDate',
                   style: GoogleFonts.leagueSpartan(
                     color: const Color.fromARGB(255, 84, 87, 88),
-                    fontSize: 16,
+                    fontSize: 14,
                   ),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        isLiked ? Icons.favorite : Icons.favorite_border,
+                        color: isLiked ? Colors.red : Colors.grey,
+                      ),
+                      onPressed: toggleLike,
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.share),
+                      onPressed: () {},
+                    ),
+                  ],
                 ),
               ],
             ),

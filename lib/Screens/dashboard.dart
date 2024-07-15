@@ -153,17 +153,17 @@ class _DashboardState extends State<Dashboard> {
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return const Center(child: Text('No posts found.'));
                   } else {
-                    List<Map<String, dynamic>> displayedPosts =
-                        snapshot.data!;
+                    List<Map<String, dynamic>> displayedPosts = snapshot.data!;
                     return Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 52),
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 52),
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding:
-                                const EdgeInsetsDirectional.fromSTEB(16, 16, 0, 0),
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                16, 16, 0, 0),
                             child: Text(
                               'Blogs',
                               style: GoogleFonts.plusJakartaSans(
@@ -210,6 +210,7 @@ class _DashboardState extends State<Dashboard> {
           tabs: [
             const GButton(
               icon: LineIcons.home,
+              
             ),
             GButton(
               icon: LineIcons.plus,

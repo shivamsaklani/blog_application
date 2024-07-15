@@ -196,7 +196,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Blocks(
-                    ontap: () => GoogleAuth().signInWithGoogle(),
+                    ontap: () => GoogleAuth().signInWithGoogle().then((_) {
+                      Navigator.pushNamed(context, '/dashboard');
+                    }),
                     imagepath: 'assets/Google.png',
                   ),
                 ],

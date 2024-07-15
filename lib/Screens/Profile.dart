@@ -21,28 +21,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? userProfilePicUrl;
   int? userAge;
 
-  // Function to update user profile
-  Future<void> _updateUserProfile(String newName, int newAge) async {
-    User? user = _auth.currentUser;
-    if (user != null) {
-      try {
-        await _firestore.collection('users').doc(user.uid).update({
-          'name': newName,
-          'age': newAge,
-        });
-        setState(() {
-          userName = newName;
-          userAge = newAge;
-        });
-        print('User profile updated successfully');
-      } catch (e) {
-        print('Error updating user profile: $e');
-      }
-    } else {
-      print('Current user is null');
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -53,25 +31,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
     User? user = _auth.currentUser;
     if (user != null) {
       try {
+        // Fetch user data from Firestore
         DocumentSnapshot userData =
             await _firestore.collection('users').doc(user.uid).get();
+
+        // Set user profile data if document exists
         if (userData.exists) {
           setState(() {
             userName = userData.get('name');
             userAge = userData.get('age');
             userProfilePicUrl = userData.get('photoUrl');
-            userEmail = userData.get('email');
+            userEmail = user.email;
           });
-          print(
-              "User Profile Loaded: Name - $userName, Age - $userAge, Photo URL - $userProfilePicUrl");
         } else {
-          print("User data does not exist for user ID: ${user.uid}");
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Please fill your profile: ${user.uid}"),
+            ),
+          );
         }
       } catch (e) {
-        print("Error fetching user data: $e");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Error fetching user data: $e"),
+          ),
+        );
       }
     } else {
-      print("Current user is null");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("No details Found"),
+        ),
+      );
     }
   }
 
