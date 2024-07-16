@@ -46,7 +46,7 @@ class _startupscreenState extends State<startupscreen> {
         "/Signup": (context) => const SignupScreen(),
         "/dashboard": (context) => const Dashboard(),
         "/publishblog": (context) => const PublishBlog(),
-        "/Forgetpassword": (context) => const Forgetpassword(),
+        "/Forgetpassword": (context) => const Resetpassword(),
         '/profile_page': (context) => const EditAccountScreen(),
         '/account_screen': (context) => const AccountScreen(),
       },
