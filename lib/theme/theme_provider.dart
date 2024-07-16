@@ -1,4 +1,4 @@
-import 'package:blog_app/theme/theme.dart';
+import 'package:blog_application/theme/theme.dart';
 import 'package:flutter/material.dart';
 
 class ThemeProvider with ChangeNotifier {
