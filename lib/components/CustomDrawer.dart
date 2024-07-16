@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+
+import '../theme/theme_provider.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -225,6 +228,17 @@ class CustomDrawer extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
+            ),
+
+            // Theme
+            Padding(
+              padding: const EdgeInsets.only(bottom: 25.0),
+              child: ListTile(
+                title: Text("Change Theme"),
+                leading: const Icon(Icons.dark_mode_outlined),
+                onTap: () => Provider.of<ThemeProvider>(context, listen: false)
+                    .toggleTheme(),
               ),
             ),
           ],

@@ -1,14 +1,16 @@
-import 'package:blog_application/Screens/EditProfileScreen.dart';
-import 'package:blog_application/Screens/Profile.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:blog_application/Screens/ResetPassword.dart';
 import 'package:blog_application/Screens/Signup.dart';
+import 'package:blog_application/Screens/setting_screen.dart';
 import 'package:blog_application/Screens/dashboard.dart';
+import 'package:blog_application/Screens/profile_screen.dart';
 import 'package:blog_application/Screens/login.dart';
 import 'package:blog_application/Screens/publish_Blog.dart';
 import 'package:blog_application/Screens/splash.dart';
 import 'package:blog_application/pages/auth_page.dart';
+import 'package:blog_application/theme/theme_provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -16,37 +18,37 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const StartUpScreen());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ThemeProvider(),
+      child: const startupscreen(),
+    ),
+  );
 }
 
-class StartUpScreen extends StatefulWidget {
-  const StartUpScreen({super.key});
+class startupscreen extends StatefulWidget {
+  const startupscreen({super.key});
 
   @override
-  State<StartUpScreen> createState() => _StartUpScreenState();
+  State<startupscreen> createState() => _startupscreenState();
 }
 
-class _StartUpScreenState extends State<StartUpScreen> {
+class _startupscreenState extends State<startupscreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        appBarTheme: const AppBarTheme(
-          color: Color.fromARGB(255, 255, 255, 255),
-        ),
-      ),
-      initialRoute: '/',
+      theme: Provider.of<ThemeProvider>(context).themeData,
       routes: {
-        '/': (context) => const Splash(),
-        '/checkuser': (context) => const AuthPage(),
-        '/login': (context) => const LoginScreen(),
-        '/signup': (context) => const SignupScreen(),
-        '/dashboard': (context) => const Dashboard(),
-        '/publishblog': (context) => const PublishBlog(),
-        '/profile': (context) => const ProfileScreen(),
-        '/editprofile': (context) => const EditProfileScreen(),
-        '/resetpassword': (context) => const Resetpassword(),
+        "/": (context) => const Splash(),
+        "/checkuser": (context) => const AuthPage(),
+        "/login": (context) => const LoginScreen(),
+        "/Signup": (context) => const SignupScreen(),
+        "/dashboard": (context) => const Dashboard(),
+        "/publishblog": (context) => const PublishBlog(),
+        "/Forgetpassword": (context) => const Resetpassword(),
+        '/profile_page': (context) => const EditAccountScreen(),
+        '/account_screen': (context) => const AccountScreen(),
       },
     );
   }
