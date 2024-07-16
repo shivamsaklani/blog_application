@@ -34,7 +34,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       try {
         // Fetch user data from Firestore
         DocumentSnapshot userData =
-            await _firestore.collection('users').doc(user.uid).get();
+        await _firestore.collection('users').doc(user.uid).get();
 
         // Set user profile data if document exists
         if (userData.exists) {
@@ -127,7 +127,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   child: Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
+                    const EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -143,24 +143,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: userProfilePicUrl != null &&
-                                      userProfilePicUrl!.isNotEmpty
+                                  userProfilePicUrl!.isNotEmpty
                                   ? Image.network(
-                                      userProfilePicUrl!,
-                                      width: 100,
-                                      height: 100,
-                                      fit: BoxFit.cover,
-                                    )
+                                userProfilePicUrl!,
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              )
                                   : const Icon(
-                                      Icons.person,
-                                      size: 50,
-                                      color: Colors.grey,
-                                    ),
+                                Icons.person,
+                                size: 50,
+                                color: Colors.grey,
+                              ),
                             ),
                           ),
                         ),
                         Padding(
                           padding:
-                              const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
+                          const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -243,7 +243,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             },
                             child: const Padding(
                               padding:
-                                  EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                              EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
                               child: Text(
                                 'Change Password',
                               ),
@@ -292,7 +292,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             },
                             child: const Padding(
                               padding:
-                                  EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                              EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
                               child: Text(
                                 'Edit Profile',
                               ),
@@ -333,6 +333,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ],
                   ),
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(24, 12, 0, 12),
+                  child: const Text(
+                    'My Blogs',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                StreamBuilder<QuerySnapshot>(
+                  stream: _firestore
+                      .collection('blogs')
+                      .where('authorId', isEqualTo: _auth.currentUser?.uid)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    final blogs = snapshot.data!.docs;
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: blogs.length,
+                      itemBuilder: (context, index) {
+                        final blog = blogs[index];
+                        return ListTile(
+                          title: Text(blog['title']),
+                          subtitle: Text(blog['content']),
+                          onTap: () {
+                            // Navigate to blog details page
+                          },
+                        );
+                      },
+                    );
+                  },
                 ),
               ],
             ),
