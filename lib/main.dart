@@ -2,7 +2,7 @@ import 'package:blog_application/Screens/ResetPassword.dart';
 import 'package:blog_application/Screens/Signup.dart';
 import 'package:blog_application/Screens/setting_screen.dart';
 import 'package:blog_application/Screens/dashboard.dart';
-import 'package:blog_application/Screens/edit_screen.dart';
+import 'package:blog_application/Screens/profile_screen.dart';
 import 'package:blog_application/Screens/login.dart';
 import 'package:blog_application/Screens/publish_Blog.dart';
 import 'package:blog_application/Screens/splash.dart';

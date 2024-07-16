@@ -1,6 +1,6 @@
 // import 'package:blog_app/Screens/_DashboardState.dart';
 import 'package:blog_application/Screens/Dashboard.dart';
-import 'package:blog_application/Screens/edit_screen.dart';
+import 'package:blog_application/Screens/profile_screen.dart';
 import 'package:blog_application/components/forward_button.dart';
 import 'package:blog_application/components/setting_item.dart';
 import 'package:blog_application/components/setting_switch.dart';
