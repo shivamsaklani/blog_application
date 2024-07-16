@@ -129,19 +129,25 @@ class CustomDrawer extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 12),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          displayName ?? user.displayName ?? 'User Name',
-                          style: GoogleFonts.robotoMono(),
-                        ),
-                        Text(
-                          user.email ?? 'email@example.com',
-                          style: GoogleFonts.robotoMono(),
-                        ),
-                      ],
-                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            displayName ?? user.displayName ?? 'User Name',
+                            style: GoogleFonts.robotoMono(),
+                            overflow: TextOverflow.ellipsis,
+                            // This ensures the text doesn't overflow
+                          ),
+                          Text(
+                            user.email ?? 'email@example.com',
+                            style: GoogleFonts.robotoMono(),
+                            overflow: TextOverflow.ellipsis,
+                            // This ensures the text doesn't overflow
+                          ),
+                        ],
+                      ),
+                    )
                   ],
                 );
               },

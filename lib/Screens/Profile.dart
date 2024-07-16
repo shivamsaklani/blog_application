@@ -30,6 +30,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _loadUserProfile() async {
     User? user = _auth.currentUser;
+    String msg = 'Details loaded';
     if (user != null) {
       try {
         // Fetch user data from Firestore
@@ -45,25 +46,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
             userEmail = user.email;
           });
         } else {
-          SmartSnackBars.showTemplatedSnackbar(
-            context: context,
-            backgroundColor:
-                const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
-            leading: Text(
-              "Please Fill up your Details",
+          msg = 'Please Fill up your Details';
+        }
+        SmartSnackBars.showTemplatedSnackbar(
+          context: context,
+          backgroundColor:
+              const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
+          leading: Expanded(
+            child: Text(
+              msg,
+              overflow: TextOverflow.clip,
               style: GoogleFonts.lato(
                 color: Colors.white,
               ),
             ),
-          );
-        }
+          ),
+        );
       } catch (e) {
         SmartSnackBars.showTemplatedSnackbar(
           context: context,
           backgroundColor:
               const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
           leading: Text(
-            "Error fetching user data: $e",
+            'Error fetching user data: $e',
             style: GoogleFonts.lato(
               color: Colors.white,
             ),
@@ -75,7 +80,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         context: context,
         backgroundColor: const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
         leading: Text(
-          "No details Found",
+          'No details Found',
           style: GoogleFonts.lato(
             color: Colors.white,
           ),
@@ -90,6 +95,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       key: scaffoldKey,
       backgroundColor: const Color(0xFFF1F4F8),
       appBar: AppBar(
+        foregroundColor: const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -100,7 +106,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         automaticallyImplyLeading: false,
         title: Text(
           'Profile',
-          style: GoogleFonts.lato(),
+          style: GoogleFonts.lato(
+            color: const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
+          ),
         ),
         centerTitle: false,
         elevation: 0,
