@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+
+import '../theme/theme_provider.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -40,13 +43,18 @@ class CustomDrawer extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             StreamBuilder<DocumentSnapshot>(
-              stream: FirebaseFirestore.instance.collection('users').doc(user!.uid).snapshots(),
+              stream: FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(user!.uid)
+                  .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
                 }
 
-                if (!snapshot.hasData || snapshot.data == null || !snapshot.data!.exists) {
+                if (!snapshot.hasData ||
+                    snapshot.data == null ||
+                    !snapshot.data!.exists) {
                   // Handle scenario where document is empty or doesn't exist
                   return Column(
                     children: [
@@ -97,26 +105,26 @@ class CustomDrawer extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           child: photoUrl != null
                               ? Image.network(
-                            photoUrl,
-                            width: 36,
-                            height: 36,
-                            fit: BoxFit.cover,
-                          )
+                                  photoUrl,
+                                  width: 36,
+                                  height: 36,
+                                  fit: BoxFit.cover,
+                                )
                               : user.photoURL != null
-                              ? Image.network(
-                            user.photoURL!,
-                            width: 36,
-                            height: 36,
-                            fit: BoxFit.cover,
-                          )
-                              : const CircleAvatar(
-                            backgroundColor: Colors.grey,
-                            child: Icon(
-                              Icons.person,
-                              color: Colors.white,
-                              size: 36,
-                            ),
-                          ),
+                                  ? Image.network(
+                                      user.photoURL!,
+                                      width: 36,
+                                      height: 36,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : const CircleAvatar(
+                                      backgroundColor: Colors.grey,
+                                      child: Icon(
+                                        Icons.person,
+                                        color: Colors.white,
+                                        size: 36,
+                                      ),
+                                    ),
                         ),
                       ),
                     ),
@@ -195,7 +203,7 @@ class CustomDrawer extends StatelessWidget {
                 Navigator.pushNamedAndRemoveUntil(
                   context,
                   '/login',
-                      (route) => false,
+                  (route) => false,
                 );
               },
               child: Padding(
@@ -214,6 +222,17 @@ class CustomDrawer extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
+            ),
+
+            // Theme
+            Padding(
+              padding: const EdgeInsets.only(bottom: 25.0),
+              child: ListTile(
+                title: Text("Change Theme"),
+                leading: const Icon(Icons.dark_mode_outlined),
+                onTap: () => Provider.of<ThemeProvider>(context, listen: false)
+                    .toggleTheme(),
               ),
             ),
           ],
