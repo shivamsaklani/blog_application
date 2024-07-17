@@ -30,12 +30,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _loadUserProfile() async {
     User? user = _auth.currentUser;
-    String msg = 'Details loaded';
     if (user != null) {
       try {
         // Fetch user data from Firestore
         DocumentSnapshot userData =
-        await _firestore.collection('users').doc(user.uid).get();
+            await _firestore.collection('users').doc(user.uid).get();
 
         // Set user profile data if document exists
         if (userData.exists) {
@@ -46,29 +45,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
             userEmail = user.email;
           });
         } else {
-          msg = 'Please Fill up your Details';
-        }
-        SmartSnackBars.showTemplatedSnackbar(
-          context: context,
-          backgroundColor:
-              const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
-          leading: Expanded(
-            child: Text(
-              msg,
-              overflow: TextOverflow.clip,
+          SmartSnackBars.showTemplatedSnackbar(
+            context: context,
+            backgroundColor:
+                const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
+            leading: Text(
+              "Please Fill up your Details",
               style: GoogleFonts.lato(
                 color: Colors.white,
               ),
             ),
-          ),
-        );
+          );
+        }
       } catch (e) {
         SmartSnackBars.showTemplatedSnackbar(
           context: context,
           backgroundColor:
               const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
           leading: Text(
-            'Error fetching user data: $e',
+            "Error fetching user data: $e",
             style: GoogleFonts.lato(
               color: Colors.white,
             ),
@@ -80,7 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         context: context,
         backgroundColor: const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
         leading: Text(
-          'No details Found',
+          "No details Found",
           style: GoogleFonts.lato(
             color: Colors.white,
           ),
@@ -95,7 +90,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       key: scaffoldKey,
       backgroundColor: const Color(0xFFF1F4F8),
       appBar: AppBar(
-        foregroundColor: const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -106,9 +100,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         automaticallyImplyLeading: false,
         title: Text(
           'Profile',
-          style: GoogleFonts.lato(
-            color: const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
-          ),
+          style: GoogleFonts.lato(),
         ),
         centerTitle: false,
         elevation: 0,
@@ -135,7 +127,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   child: Padding(
                     padding:
-                    const EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
+                        const EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -151,24 +143,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: userProfilePicUrl != null &&
-                                  userProfilePicUrl!.isNotEmpty
+                                      userProfilePicUrl!.isNotEmpty
                                   ? Image.network(
-                                userProfilePicUrl!,
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
-                              )
+                                      userProfilePicUrl!,
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.cover,
+                                    )
                                   : const Icon(
-                                Icons.person,
-                                size: 50,
-                                color: Colors.grey,
-                              ),
+                                      Icons.person,
+                                      size: 50,
+                                      color: Colors.grey,
+                                    ),
                             ),
                           ),
                         ),
                         Padding(
                           padding:
-                          const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
+                              const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -251,7 +243,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             },
                             child: const Padding(
                               padding:
-                              EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                                  EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
                               child: Text(
                                 'Change Password',
                               ),
@@ -300,7 +292,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             },
                             child: const Padding(
                               padding:
-                              EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                                  EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
                               child: Text(
                                 'Edit Profile',
                               ),
@@ -341,42 +333,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(24, 12, 0, 12),
-                  child: const Text(
-                    'My Blogs',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                StreamBuilder<QuerySnapshot>(
-                  stream: _firestore
-                      .collection('blogs')
-                      .where('authorId', isEqualTo: _auth.currentUser?.uid)
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    final blogs = snapshot.data!.docs;
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: blogs.length,
-                      itemBuilder: (context, index) {
-                        final blog = blogs[index];
-                        return ListTile(
-                          title: Text(blog['title']),
-                          subtitle: Text(blog['content']),
-                          onTap: () {
-                            // Navigate to blog details page
-                          },
-                        );
-                      },
-                    );
-                  },
                 ),
               ],
             ),
