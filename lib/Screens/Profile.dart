@@ -30,8 +30,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _loadUserProfile() async {
+    String msg = '';
     User? user = _auth.currentUser;
-    String msg = 'Details loaded';
+
     if (user != null) {
       try {
         // Fetch user data from Firestore
@@ -47,8 +48,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
             userEmail = user.email;
           });
         } else {
-          msg = 'Please Fill up your Details';
+          msg = 'Fill up your details';
+          SmartSnackBars.showTemplatedSnackbar(
+            context: context,
+            animateFrom: AnimateFrom.fromTop,
+            backgroundColor:
+                const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
+            leading: Expanded(
+              child: Text(
+                msg,
+                overflow: TextOverflow.clip,
+                style: GoogleFonts.lato(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          );
         }
+      } catch (e) {
+        msg = 'Error fetching user data: $e';
         SmartSnackBars.showTemplatedSnackbar(
           context: context,
           animateFrom: AnimateFrom.fromTop,
@@ -57,22 +75,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           leading: Expanded(
             child: Text(
               msg,
-              overflow: TextOverflow.ellipsis,
-              style: GoogleFonts.lato(
-                color: Colors.white,
-              ),
-            ),
-          ),
-        );
-      } catch (e) {
-        SmartSnackBars.showTemplatedSnackbar(
-          context: context,
-          animateFrom: AnimateFrom.fromTop,
-          backgroundColor:
-              const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
-          leading: Expanded(
-            child: Text(
-              'Error fetching user data: $e',
               overflow: TextOverflow.clip,
               style: GoogleFonts.lato(
                 color: Colors.white,
@@ -82,13 +84,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
         );
       }
     } else {
+      msg = 'No details Found';
       SmartSnackBars.showTemplatedSnackbar(
         context: context,
         animateFrom: AnimateFrom.fromTop,
         backgroundColor: const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
         leading: Expanded(
           child: Text(
-            'No details Found',
+            msg,
             overflow: TextOverflow.clip,
             style: GoogleFonts.lato(
               color: Colors.white,

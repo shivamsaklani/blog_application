@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:smart_snackbars/enums/animate_from.dart';
 import 'dart:io';
 
 import 'package:smart_snackbars/smart_snackbars.dart';
@@ -118,7 +119,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       } finally {
         SmartSnackBars.showTemplatedSnackbar(
           context: context,
-          backgroundColor: const Color.fromARGB(188, 12, 188, 156),
+          backgroundColor:
+              const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
+          animateFrom: AnimateFrom.fromTop,
           leading: Text(
             _errorMessage,
             style: GoogleFonts.lato(

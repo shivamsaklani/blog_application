@@ -155,9 +155,7 @@ class CustomDrawer extends StatelessWidget {
               color: Color(0xFFE0E3E7),
             ),
             GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, '/profile');
-              },
+              onTap: () {},
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: Row(
