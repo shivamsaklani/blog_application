@@ -1,4 +1,3 @@
-import 'package:blog_application/components/blogpost.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +6,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 
 import '../components/CustomDrawer.dart';
+import '../components/BlogPost.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -117,7 +117,9 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         foregroundColor: const Color.fromARGB(188, 12, 188, 156),
         title: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -131,7 +133,6 @@ class _DashboardState extends State<Dashboard> {
         ),
       ),
       drawer: const CustomDrawer(),
-      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         controller: _scrollController,
         child: Padding(
@@ -220,7 +221,7 @@ class _DashboardState extends State<Dashboard> {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        padding: const EdgeInsetsDirectional.fromSTEB(10, 5, 10, 5),
         child: GNav(
           haptic: true,
           curve: Curves.easeOutExpo,

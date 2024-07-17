@@ -143,8 +143,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Edit Profile'),
+        foregroundColor: const Color.fromARGB(188, 12, 188, 156),
+        title: Text(
+          'Edit Profile',
+          style: GoogleFonts.lato(
+            color: const Color.fromARGB(188, 12, 188, 156),
+          ),
+        ),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -159,28 +166,65 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       backgroundImage: FileImage(_imageFile!),
                     )
                   else
-                    const CircleAvatar(
+                    CircleAvatar(
+                      backgroundColor:
+                          Color.fromARGB(186, 154, 148, 148).withOpacity(1),
                       radius: 50,
-                      child: Icon(Icons.person),
+                      child: Icon(
+                        Icons.person,
+                        color:
+                            Color.fromARGB(187, 253, 255, 255).withOpacity(1),
+                      ),
                     ),
                   TextButton.icon(
                     onPressed: _pickImage,
-                    icon: const Icon(Icons.image),
-                    label: const Text('Change Photo'),
+                    icon: Icon(
+                      Icons.image,
+                      color: const Color.fromARGB(188, 12, 188, 156)
+                          .withOpacity(1),
+                    ),
+                    label: Text(
+                      'Change Photo',
+                      style: GoogleFonts.lato(
+                        color: const Color.fromARGB(188, 12, 188, 156)
+                            .withOpacity(1),
+                      ),
+                    ),
                   ),
                   TextField(
                     controller: _nameController,
-                    decoration: const InputDecoration(labelText: 'Name'),
+                    decoration: InputDecoration(
+                        labelText: 'Name',
+                        labelStyle: TextStyle(
+                          color: Color.fromARGB(187, 0, 0, 0).withOpacity(1),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                          color: const Color.fromARGB(188, 12, 188, 156)
+                              .withOpacity(1),
+                        ))),
+                  ),
+                  SizedBox(
+                    height: 20,
                   ),
                   TextField(
                     controller: _ageController,
-                    decoration: const InputDecoration(labelText: 'Age'),
+                    decoration: InputDecoration(
+                        labelText: 'Age',
+                        labelStyle: TextStyle(
+                          color: Color.fromARGB(187, 0, 0, 0).withOpacity(1),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                          color: const Color.fromARGB(188, 12, 188, 156)
+                              .withOpacity(1),
+                        ))),
                     keyboardType: TextInputType.number,
                   ),
                   const SizedBox(height: 20),
                   Buttons(
                     onPressed: _updateProfile,
-                    text: "save",
+                    text: "Save",
                     color: const Color.fromARGB(188, 12, 188, 156),
                     textColor: Colors.white,
                   ),
