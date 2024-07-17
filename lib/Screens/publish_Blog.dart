@@ -122,10 +122,6 @@ class _PublishBlogState extends State<PublishBlog> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text('Post'),
-        foregroundColor: const Color.fromARGB(188, 12, 188, 156),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(

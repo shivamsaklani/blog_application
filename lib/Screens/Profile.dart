@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:smart_snackbars/enums/animate_from.dart';
 import 'package:smart_snackbars/smart_snackbars.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -50,12 +51,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         }
         SmartSnackBars.showTemplatedSnackbar(
           context: context,
+          animateFrom: AnimateFrom.fromTop,
           backgroundColor:
               const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
           leading: Expanded(
             child: Text(
               msg,
-              overflow: TextOverflow.clip,
+              overflow: TextOverflow.ellipsis,
               style: GoogleFonts.lato(
                 color: Colors.white,
               ),
@@ -65,12 +67,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
       } catch (e) {
         SmartSnackBars.showTemplatedSnackbar(
           context: context,
+          animateFrom: AnimateFrom.fromTop,
           backgroundColor:
               const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
-          leading: Text(
-            'Error fetching user data: $e',
-            style: GoogleFonts.lato(
-              color: Colors.white,
+          leading: Expanded(
+            child: Text(
+              'Error fetching user data: $e',
+              overflow: TextOverflow.clip,
+              style: GoogleFonts.lato(
+                color: Colors.white,
+              ),
             ),
           ),
         );
@@ -78,11 +84,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     } else {
       SmartSnackBars.showTemplatedSnackbar(
         context: context,
+        animateFrom: AnimateFrom.fromTop,
         backgroundColor: const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
-        leading: Text(
-          'No details Found',
-          style: GoogleFonts.lato(
-            color: Colors.white,
+        leading: Expanded(
+          child: Text(
+            'No details Found',
+            overflow: TextOverflow.clip,
+            style: GoogleFonts.lato(
+              color: Colors.white,
+            ),
           ),
         ),
       );
@@ -94,25 +104,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: const Color(0xFFF1F4F8),
-      appBar: AppBar(
-        foregroundColor: const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.maybePop(context);
-          },
-        ),
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-        title: Text(
-          'Profile',
-          style: GoogleFonts.lato(
-            color: const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
-          ),
-        ),
-        centerTitle: false,
-        elevation: 0,
-      ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.max,
