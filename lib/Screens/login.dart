@@ -246,7 +246,20 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.pushNamed(context, '/dashboard');
                       }).catchError((error) {
                         // Handle any errors here
-                        print('Sign in failed: $error');
+                        SmartSnackBars.showTemplatedSnackbar(
+                          context: context,
+                          backgroundColor:
+                              const Color.fromARGB(188, 12, 188, 156)
+                                  .withOpacity(1),
+                          animateFrom: AnimateFrom.fromTop,
+                          leading: Text(
+                            error,
+                            style: GoogleFonts.lato(
+                              fontSize: 12,
+                              color: Colors.white,
+                            ),
+                          ),
+                        );
                       });
                     },
                     imagepath: 'assets/Google.png',
