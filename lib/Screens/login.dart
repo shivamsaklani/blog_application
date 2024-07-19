@@ -241,9 +241,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Blocks(
-                    ontap: () => GoogleAuth().signInWithGoogle().then((_) {
-                      Navigator.pushNamed(context, '/dashboard');
-                    }),
+                    ontap: () {
+                      GoogleAuth().signInWithGoogle().then((userCredential) {
+                        Navigator.pushNamed(context, '/dashboard');
+                      }).catchError((error) {
+                        // Handle any errors here
+                        print('Sign in failed: $error');
+                      });
+                    },
                     imagepath: 'assets/Google.png',
                   ),
                 ],

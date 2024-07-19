@@ -55,7 +55,6 @@ class _SignupScreenState extends State<SignupScreen> {
       // Send email verification
       await userCredential.user?.sendEmailVerification();
 
-      // Navigate to another screen or show success msg
       if (userCredential.user != null) {
         msg = 'email sent to $email.';
         SmartSnackBars.showTemplatedSnackbar(
