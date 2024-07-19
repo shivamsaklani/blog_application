@@ -5,10 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:smart_snackbars/enums/animate_from.dart';
 import 'dart:io';
 
 import 'package:smart_snackbars/smart_snackbars.dart';
+import 'package:smart_snackbars/enums/animate_from.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -63,7 +63,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Future<void> _updateProfile() async {
     setState(() {
       _isLoading = true;
-      _errorMessage = 'Successfully Saved Profile';
     });
 
     String name = _nameController.text.trim();
@@ -109,6 +108,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
         setState(() {
           _isLoading = false;
+          _errorMessage = 'Successfully Saved Profile';
         });
         Navigator.pop(context);
       } catch (e) {
@@ -170,13 +170,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     )
                   else
                     CircleAvatar(
-                      backgroundColor:
-                          Color.fromARGB(186, 154, 148, 148).withOpacity(1),
+                      backgroundColor: const Color.fromARGB(186, 154, 148, 148)
+                          .withOpacity(1),
                       radius: 50,
                       child: Icon(
                         Icons.person,
-                        color:
-                            Color.fromARGB(187, 253, 255, 255).withOpacity(1),
+                        color: const Color.fromARGB(187, 253, 255, 255)
+                            .withOpacity(1),
                       ),
                     ),
                   TextButton.icon(
@@ -199,7 +199,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     decoration: InputDecoration(
                         labelText: 'Name',
                         labelStyle: TextStyle(
-                          color: Color.fromARGB(187, 0, 0, 0).withOpacity(1),
+                          color:
+                              const Color.fromARGB(187, 0, 0, 0).withOpacity(1),
                         ),
                         focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
@@ -207,7 +208,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               .withOpacity(1),
                         ))),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   TextField(
@@ -215,7 +216,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     decoration: InputDecoration(
                         labelText: 'Age',
                         labelStyle: TextStyle(
-                          color: Color.fromARGB(187, 0, 0, 0).withOpacity(1),
+                          color:
+                              const Color.fromARGB(187, 0, 0, 0).withOpacity(1),
                         ),
                         focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
