@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:smart_snackbars/enums/animate_from.dart';
 import 'package:smart_snackbars/smart_snackbars.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:io';
@@ -38,6 +39,7 @@ class _PublishBlogState extends State<PublishBlog> {
       SmartSnackBars.showTemplatedSnackbar(
         context: context,
         backgroundColor: const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
+        animateFrom: AnimateFrom.fromTop,
         leading: Text(
           'Please fill in all fields and select an image.',
           style: GoogleFonts.lato(
@@ -62,6 +64,7 @@ class _PublishBlogState extends State<PublishBlog> {
       SmartSnackBars.showTemplatedSnackbar(
         context: context,
         backgroundColor: const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
+        animateFrom: AnimateFrom.fromTop,
         leading: Text(
           'Blog post submitted successfully!',
           style: GoogleFonts.lato(
@@ -84,6 +87,7 @@ class _PublishBlogState extends State<PublishBlog> {
       SmartSnackBars.showTemplatedSnackbar(
         context: context,
         backgroundColor: const Color.fromARGB(188, 12, 188, 156).withOpacity(1),
+        animateFrom: AnimateFrom.fromTop,
         leading: Text(
           'Failed to submit blog post: $e',
           style: GoogleFonts.lato(
